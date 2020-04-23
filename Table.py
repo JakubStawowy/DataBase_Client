@@ -9,10 +9,17 @@ class Table:
     def getTableName(self):
 
         return self.__tableName
+    def numberOfRowsIncrement(self):
+
+        self.__numberOfRows=self.__numberOfRows+1
 
     def getColumnDict(self):
 
         return self.__columnDict
+
+    def getContent(self):
+
+        return self.__content
 
     def addRow(self,content:list):
 
