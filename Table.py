@@ -1,30 +1,29 @@
 class Table:
-    def __init__(self,tableName:str, numberOfColumns:int, numberOfRows:int,columnDict:dict, content:list):
+    def __init__(self, tableName: str, numberOfColumns: int, numberOfRows: int, columnDict: dict, content: list):
+
         self.__tableName = tableName
         self.__numberOfColumns = numberOfColumns
         self.__numberOfRows = numberOfRows
         self.__columnDict = columnDict
         self.__content = content
 
-    def getTableName(self):
+        self.getTableName=lambda :self.__tableName
+        self.getColumnDict=lambda :self.__columnDict
+        self.getContent=lambda :self.__content
 
-        return self.__tableName
     def numberOfRowsIncrement(self):
+        self.__numberOfRows = self.__numberOfRows + 1
 
-        self.__numberOfRows=self.__numberOfRows+1
+    def removeRow(self, rowList):
+        self.__content.remove(rowList)
 
-    def getColumnDict(self):
-
-        return self.__columnDict
-
-    def getContent(self):
-
-        return self.__content
-
-    def addRow(self,content:list):
-
+    def addRow(self, content: list):
         self.__content.append(content)
 
     def __str__(self):
+        return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
+            self.__columnDict) + '\n' + str(self.__content)
 
-        return self.__tableName+", "+str(self.__numberOfColumns)+', '+str(self.__numberOfRows)+', '+str(self.__columnDict)+','+str(self.__content)
+
+
+
