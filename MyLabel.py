@@ -26,4 +26,3 @@ class MyLabel():
         label.setText(text)
         label.adjustSize()
         label.move(x, y)
-

@@ -36,4 +36,3 @@ class MyButton():
         self.__window.button.setIconSize(QtCore.QSize(ix, iy))
         self.__window.button.setToolTip(tip)
         self.__window.button.clicked.connect(fun)
-

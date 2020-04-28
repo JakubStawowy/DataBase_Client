@@ -1,3 +1,4 @@
+from ProjectController import ProjectController
 from Table import Table
 
 class ProjectModel:
@@ -11,6 +12,8 @@ class ProjectModel:
         private parameter __tableStructure list is used to storage tables
         """
         self.__tableStructure = []
+        self.__columnTypes={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float'}
+        self.getStructure = lambda: self.__tableStructure
 
 
     def addTable(self, newTableStructure:Table):
@@ -26,7 +29,7 @@ class ProjectModel:
 
     def createTable(self,tableName:str, numberOfColumns:int, numberOfRows:int,columnDict:dict, content:list):
         """
-        Create table function
+        Create table method
         This method creates new table class instance and adds it to model's table structure
 
         :param tableName: table name (str)
@@ -43,8 +46,8 @@ class ProjectModel:
 
     def removeTable(self,tableName:str):
         """
-        Remove table function
-        this function removes table instance from model's table structure
+        Remove table method
+        this method removes table instance from model's table structure
 
         :param tableName: table name (str)
         """
@@ -60,8 +63,8 @@ class ProjectModel:
 
     def addRow(self, tableName:str, rowList:list):
         """
-        Add row function
-        this function inserts new row into existing table
+        Add row method
+        this method inserts new row into existing table
 
         :param tableName: table name (str)
         :param rowList: list of row content (list)
@@ -89,8 +92,8 @@ class ProjectModel:
 
     def removeRow(self,tableName:str,rowList:list):
         """
-        Remove row function
-        this function removes selected row from selected table
+        Remove row method
+        this method removes selected row from selected table
 
         :param tableName: table name (str)
         :param rowList: list of row content (list)
@@ -110,8 +113,8 @@ class ProjectModel:
 
     def lambdaBrowse(self, tableName:str):
         """
-        Lambda browse function
-        this function searches for tables components which meet described conditions
+        Lambda browse method
+        this method searches for tables components which meet described conditions
 
         :param tableName: table name (str)
 
@@ -142,8 +145,8 @@ class ProjectModel:
 
     def writeToFile(self,fileName:str):
         """
-        Write to file function
-        this function writes tables structure to file with extension ".txt"
+        Write to file method
+        this method writes tables structure to file with extension ".txt"
 
         :param fileName: file name (str)
         """
@@ -173,4 +176,23 @@ class ProjectModel:
                     self.createTable(*l)
                     l=[]
                 i = i + 1
+
+    def returnTableIndex(self, tableList, tableName:str):
+        """
+        Return Table Index Function
+        this function returns table index in model table structure using table name
+
+        :param tableList: list of tables (list)
+        :param tableName: table name (str)
+        :return: index: table index (int)
+        """
+        index = 0
+
+        for x in tableList:
+            #print("porwonuje: ",x.getTableName()," z ",tableName)
+            if x.getTableName() == tableName:
+                return index
+            else:
+                index = index+1
+        raise Exception('nie ma takiej tabeli')
 

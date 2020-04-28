@@ -3,7 +3,7 @@ class Table:
     Table class
     this class stores table parameters (table name, number of columns, number of rows, column names with types, table content)
     """
-    def __init__(self, tableName: str, numberOfColumns: int, numberOfRows: int, columnDict: dict, content: list):
+    def __init__(self, tableName='', numberOfColumns=0, numberOfRows=0, columnDict={}, content=[]):
         """
         Table class constructor
 
@@ -23,6 +23,8 @@ class Table:
         self.getTableName=lambda :self.__tableName
         self.getColumnDict=lambda :self.__columnDict
         self.getContent=lambda :self.__content
+        self.getNumberOfColumns = lambda :self.__numberOfColumns
+
 
     def numberOfRowsIncrement(self):
         """
@@ -48,11 +50,29 @@ class Table:
         :param content: row content (list)
         """
         self.__content.append(content)
+        self.__numberOfRows=self.__numberOfRows+1
+
+    def addColumn(self,columnName:str, columnType:str):
+        """
+        Add column method
+        this method increases number of columns in table and adds column name and type to column dictionary
+
+        :param columnName: column name (str)
+        :param columnType: columnt data type (str)
+        """
+        self.__columnDict[columnName]=columnType
+        self.__numberOfColumns=self.__numberOfColumns+1
+
+    def setTableName(self,tableName:str):
+        """
+        Set table name method
+        this method sets table name
+
+        :param tableName: table name (str)
+        """
+        self.__tableName=tableName
 
     def __str__(self):
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
-
-
-
 
