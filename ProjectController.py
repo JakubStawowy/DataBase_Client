@@ -10,7 +10,7 @@ class ProjectController:
         :param tableName: table name (str)
         """
         if tableName == '':
-            raise Exception('Zla nazwa tabeli')
+            raise Exception('Nazwa tabeli nie może być pusta!')
         else:
             pass
 
@@ -32,7 +32,7 @@ class ProjectController:
         :param columnName: column name (str)
         """
         if columnName=='':
-            raise Exception('Zla nazwa kolumny')
+            raise Exception('Nazwa kolumny nie może być pusta!')
         else:
             pass
     def checkColumnType(self,columnType):
@@ -43,7 +43,7 @@ class ProjectController:
         :param columnType: column data type (str)
         """
         if columnType == 'Wybierz Typ':
-            raise Exception('Zly typ kolumny')
+            raise Exception('Wybierz typ danych!')
         else:
             pass
 
@@ -55,9 +55,10 @@ class ProjectController:
         :param numberOfColumns: number of columns (int)
         """
         if numberOfColumns == 0:
-            raise Exception('Za mała ilość kolumn!')
+            raise Exception('Liczba kolumn nie może być równa zero!')
         else:
             pass
 
     def cancel(self):
+
         raise Exception('')

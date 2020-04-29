@@ -196,3 +196,26 @@ class ProjectModel:
                 index = index+1
         raise Exception('nie ma takiej tabeli')
 
+    def getTableRow(self,tableName:str, index:int):
+
+         for x in self.__tableStructure:
+
+             if x.getTableName() == tableName:
+
+                 return x.getRow(index)
+
+    def getTableNumberOfRows(self, tableName:str):
+
+        for x in self.__tableStructure:
+
+            if x.getTableName() == tableName:
+
+                return x.getNumberOfRows()
+
+    def getTable(self,tableName:str)->Table:
+
+        for x in self.__tableStructure:
+
+            if x.getTableName()==tableName:
+
+                return x

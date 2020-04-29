@@ -1,6 +1,8 @@
 import sys
 
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QDialog, QLineEdit, QApplication, QLabel
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QDialog, QLineEdit, QApplication, QLabel, QVBoxLayout, QTableWidget, \
+    QTableWidgetItem, QPushButton
 
 from MyButton import MyButton
 from MyLabel import MyLabel
@@ -46,7 +48,7 @@ class MainWindow(QMainWindow):
         self.__buttons.CreateButtons('Edytuj wiersz',550,125,200,30,'none',40,40,'Kliknij aby edytować wiersz',self.passFunc)
         self.__buttons.CreateButtons('Dodaj wiersz',550,175,200,30,'none',35,35,'Kliknij aby dodać wiersz',self.passFunc)
         self.__buttons.CreateButtons('Usuń wiersz',550,225,200,30,'none',35,35,'Kliknij aby usunąć wiersz',self.passFunc)
-        self.__buttons.CreateButtons('Edytuj tabelę',550,275,200,30,'none',35,35,'Kliknij aby edytować tabelę',self.showStructure)
+        self.__buttons.CreateButtons('Edytuj tabelę',550,275,200,30,'none',35,35,'Kliknij aby edytować tabelę',self.editTable)
         self.__buttons.CreateButtons('Dodaj tabelę',550,325,200,30,'none',35,35,'Kliknij aby dodać nową tabelę',self.createTable)
         self.__buttons.CreateButtons('Usuń tabelę',550,375,200,30,'none',35,35,'Kliknij aby usunąć tabelę',self.removeTable)
         self.__buttons.CreateButtons('Zakończ',550,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.Cancel)
@@ -55,6 +57,7 @@ class MainWindow(QMainWindow):
         self.__comboBox1.move(400,125)
         self.__comboBox1.addItem('Wybierz tabele')
         self.__comboBox1.adjustSize()
+        self.__comboBox1.currentTextChanged.connect(self.setComboBox2)
 
         self.__comboBox2 = QComboBox(self)
         self.__comboBox2.move(400, 175)
@@ -70,6 +73,35 @@ class MainWindow(QMainWindow):
 
         self.__ProjectModel.showStructure()
 
+    def editTable(self):
+        """
+        Edit table method
+        this method initializes new editTable object (editTable's constructor argument is chosen table in comboBox1)
+        """
+        try:
+            currentTable = self.__comboBox1.currentText()
+            self.__ProjectController.checkRemovedTableName(currentTable)
+            editTable = editTableWindow(self.__ProjectModel,currentTable)
+            editTable.setModal(True)
+            editTable.exec()
+        except Exception as e:
+            print(e)
+    def setComboBox2(self):
+        """
+        Set comboBox2 method
+        this method adds chosen table's (from comboBox1) rows to comboBox2
+        """
+        try:
+            tableName = self.__comboBox1.currentText()
+            y = len(self.__comboBox2)-1
+            while(y>0):
+                self.__comboBox2.removeItem(y)
+                y=y-1
+            for x in range(self.__ProjectModel.getTableNumberOfRows(tableName)):
+                print(1)
+                self.__comboBox2.addItem(str(self.__ProjectModel.getTableRow(tableName, x)))
+        except Exception as e:
+            print(e)
     def createTable(self):
         """
         Create table function
@@ -332,8 +364,8 @@ class WarningWindow(QDialog):
         self.setGeometry(self.__left,self.__top,self.__width,self.__height)
         self.setFixedSize(250,150)
         self.setWindowTitle(self.__windowTitle)
-        self.__Labels.createLabel(self.__text,80,45)
-        self.__buttons.CreateButtons('Anuluj',75,90,100,30,'none',0,0,'miau',self.close)
+        self.__Labels.createLabel(self.__text,50,45)
+        self.__buttons.CreateButtons('Rozumiem',75,90,100,30,'none',0,0,'miau',self.close)
         self.show()
 
 class ConfirmWindow(QDialog):
@@ -361,6 +393,104 @@ class ConfirmWindow(QDialog):
 
     def Cancel(self):
         self.__ProjectModel.ProjectController.cancel()
+
+
+class editTableWindow(QDialog):
+    """
+    Edit table class
+    """
+    def __init__(self,ProjectModel:ProjectModel, tableName:str):
+        """
+        Edit table class constructor
+
+        :param ProjectModel: Project model (ProjectModel)
+        :param tableName: table name (str)
+        """
+        super().__init__()
+
+        self.__top=100
+        self.__left=100
+        self.__width=720
+        self.__height=600
+        self.__tableName=tableName
+        self.__ProjectModel=ProjectModel
+        self.__title=self.__ProjectModel.getTable(tableName).getTableName()
+        self.__numberOfRows=self.__ProjectModel.getTable(tableName).getNumberOfRows()
+        self.__numberOfColumns=self.__ProjectModel.getTable(tableName).getNumberOfColumns()
+        self.__columnDict=self.__ProjectModel.getTable(tableName).getColumnDict()
+        self.__content=self.__ProjectModel.getTable(tableName).getContent()
+
+        self.InitWindow()
+
+    def InitWindow(self):
+        """
+        Init Window method
+        this method sets all window widgets
+        """
+        self.setWindowTitle(self.__title)
+        self.setGeometry(self.__left,self.__top,self.__width,self.__height)
+        self.setTable()
+
+        self.vBoxLayout = QVBoxLayout()
+        self.vBoxLayout.addWidget(self.tableWidget)
+
+        self.createButton1()
+        self.createButton2()
+
+        self.vBoxLayout.addWidget(self.button1)
+        self.vBoxLayout.addWidget(self.button2)
+        self.setLayout(self.vBoxLayout)
+        self.show()
+
+    def setTable(self):
+        """
+        Set table method
+        this method creates new QTableWidget object and fills it with table content
+        """
+        self.tableWidget = QTableWidget()
+        self.tableWidget.setRowCount(self.__numberOfRows)
+        self.tableWidget.setColumnCount(self.__numberOfColumns)
+        for x in range(self.__numberOfRows):
+            for y in range(self.__numberOfColumns):
+                self.tableWidget.setItem(x,y,QTableWidgetItem(self.__content[x][y]))
+
+
+    def createButton1(self):
+        self.button1 = QPushButton('Dodaj wiersz',self)
+        self.button1.clicked.connect(self.AddRow)
+    def createButton2(self):
+        self.button2 = QPushButton('Zapisz tabele',self)
+        self.button2.clicked.connect(self.SaveData)
+
+    def AddRow(self):
+        """
+        Add row method
+        this methods increases table's number of rows and adds new empty row to displayed table
+        """
+        self.__numberOfRows=self.__numberOfRows+1
+        self.tableWidget.setRowCount(self.__numberOfRows)
+        for y in range(self.__numberOfColumns):
+            self.tableWidget.setItem(self.__numberOfRows-1,y,QTableWidgetItem(''))
+
+
+    def SaveData(self):
+        """
+        Save data method
+        this method swap's table old content with new content (loaded from editTable window)
+        """
+        content = []
+        for x in range(self.__numberOfRows):
+            row = []
+            for y in range(self.__numberOfColumns):
+                row.append(self.tableWidget.item(x,y).text())
+            content.append(row)
+
+        self.__ProjectModel.getTable(self.__tableName).setContent(content)
+
+        for x in range(self.__numberOfRows):
+            self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
+
+        self.close()
 
 if __name__=='__main__':
 

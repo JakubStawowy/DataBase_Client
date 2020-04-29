@@ -24,6 +24,8 @@ class Table:
         self.getColumnDict=lambda :self.__columnDict
         self.getContent=lambda :self.__content
         self.getNumberOfColumns = lambda :self.__numberOfColumns
+        self.getNumberOfRows = lambda : self.__numberOfRows
+        self.getRow = lambda index: self.__content[index]
 
 
     def numberOfRowsIncrement(self):
@@ -71,6 +73,11 @@ class Table:
         :param tableName: table name (str)
         """
         self.__tableName=tableName
+
+    def setContent(self, content:list):
+
+        self.__content=content
+
 
     def __str__(self):
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
