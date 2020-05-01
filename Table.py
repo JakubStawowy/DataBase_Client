@@ -18,6 +18,11 @@ class Table:
         self.__numberOfColumns = numberOfColumns
         self.__numberOfRows = numberOfRows
         self.__columnDict = columnDict
+        self.__columnTypesList = []
+        self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float'}
+
+        for x in self.__columnDict.values():
+            self.__columnTypesList.append(x)
         self.__content = content
 
         self.getTableName=lambda :self.__tableName
@@ -26,6 +31,7 @@ class Table:
         self.getNumberOfColumns = lambda :self.__numberOfColumns
         self.getNumberOfRows = lambda : self.__numberOfRows
         self.getRow = lambda index: self.__content[index]
+        self.getColumnTypesList = lambda : self.__columnTypesList
 
 
     def numberOfRowsIncrement(self):
@@ -64,6 +70,7 @@ class Table:
         """
         self.__columnDict[columnName]=columnType
         self.__numberOfColumns=self.__numberOfColumns+1
+        self.__columnTypesList.append(self.__typeDict[columnType])
 
     def setTableName(self,tableName:str):
         """
@@ -73,7 +80,8 @@ class Table:
         :param tableName: table name (str)
         """
         self.__tableName=tableName
-
+    def setNumberOfRows(self, numberOfRows:int):
+        self.__numberOfRows=numberOfRows
     def setContent(self, content:list):
 
         self.__content=content
@@ -83,3 +91,5 @@ class Table:
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
 
+table=Table('asd',2,2,{'asd':'int','cx':'float'},[])
+print(type(eval('2.0')))

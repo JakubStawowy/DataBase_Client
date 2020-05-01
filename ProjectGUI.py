@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
             editTable.setModal(True)
             editTable.exec()
         except Exception as e:
-            print(e)
+            self.warningWindow(str(e))
     def setComboBox2(self):
         """
         Set comboBox2 method
@@ -98,7 +98,6 @@ class MainWindow(QMainWindow):
                 self.__comboBox2.removeItem(y)
                 y=y-1
             for x in range(self.__ProjectModel.getTableNumberOfRows(tableName)):
-                print(1)
                 self.__comboBox2.addItem(str(self.__ProjectModel.getTableRow(tableName, x)))
         except Exception as e:
             print(e)
@@ -399,7 +398,7 @@ class editTableWindow(QDialog):
     """
     Edit table class
     """
-    def __init__(self,ProjectModel:ProjectModel, tableName:str):
+    def __init__(self,projectModel:ProjectModel, tableName:str):
         """
         Edit table class constructor
 
@@ -413,7 +412,8 @@ class editTableWindow(QDialog):
         self.__width=720
         self.__height=600
         self.__tableName=tableName
-        self.__ProjectModel=ProjectModel
+        self.__ProjectModel=projectModel
+        self.__ProjectController = ProjectController()
         self.__title=self.__ProjectModel.getTable(tableName).getTableName()
         self.__numberOfRows=self.__ProjectModel.getTable(tableName).getNumberOfRows()
         self.__numberOfColumns=self.__ProjectModel.getTable(tableName).getNumberOfColumns()
@@ -450,6 +450,11 @@ class editTableWindow(QDialog):
         self.tableWidget = QTableWidget()
         self.tableWidget.setRowCount(self.__numberOfRows)
         self.tableWidget.setColumnCount(self.__numberOfColumns)
+        columnNames=''
+        for x, y in zip(self.__ProjectModel.getTable(self.__tableName).getColumnDict(),self.__ProjectModel.getTable(self.__tableName).getColumnDict().values()):
+            columnNames=columnNames+x+' ['+self.__ProjectModel.getTypeDict()[y]+']'+','
+
+        self.tableWidget.setHorizontalHeaderLabels(columnNames.split(','))
         for x in range(self.__numberOfRows):
             for y in range(self.__numberOfColumns):
                 self.tableWidget.setItem(x,y,QTableWidgetItem(self.__content[x][y]))
@@ -478,19 +483,26 @@ class editTableWindow(QDialog):
         Save data method
         this method swap's table old content with new content (loaded from editTable window)
         """
-        content = []
-        for x in range(self.__numberOfRows):
-            row = []
-            for y in range(self.__numberOfColumns):
-                row.append(self.tableWidget.item(x,y).text())
-            content.append(row)
+        try:
+            content = []
+            self.__ProjectModel.getTable(self.__tableName).setNumberOfRows(0)
+            for x in range(self.__numberOfRows):
+                row = []
+                for y in range(self.__numberOfColumns):
 
-        self.__ProjectModel.getTable(self.__tableName).setContent(content)
+                    self.__ProjectController.checkEnteredType(self.tableWidget.item(x,y).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[y])
 
-        for x in range(self.__numberOfRows):
-            self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
+                    row.append(self.tableWidget.item(x,y).text())
 
-        self.close()
+                self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
+                content.append(row)
+
+            self.__ProjectModel.getTable(self.__tableName).setContent(content)
+            self.close()
+        except Exception as e:
+            warning = WarningWindow('Zly typ wpisywanych danych!')
+            warning.setModal(True)
+            warning.exec()
 
 if __name__=='__main__':
 

@@ -12,8 +12,9 @@ class ProjectModel:
         private parameter __tableStructure list is used to storage tables
         """
         self.__tableStructure = []
-        self.__columnTypes={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float'}
+        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float'}
         self.getStructure = lambda: self.__tableStructure
+        self.getTypeDict = lambda: self.__typeDict
 
 
     def addTable(self, newTableStructure:Table):

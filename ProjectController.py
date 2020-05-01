@@ -59,6 +59,21 @@ class ProjectController:
         else:
             pass
 
+    def checkEnteredType(self, value:str, columnType:str):
+        """
+        Check entered type method
+        this method checks if entered value (type str) can be projected to it's column type
+
+        :param value: value (str)
+        :param columnType: column type (str)
+        """
+        if columnType == 'str':
+            pass
+        else:
+            value = eval(columnType)(value)
+
     def cancel(self):
 
         raise Exception('')
+
+
