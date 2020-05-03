@@ -51,7 +51,8 @@ class MainWindow(QMainWindow):
         self.__buttons.CreateButtons('Edytuj tabelę',550,275,200,30,'none',35,35,'Kliknij aby edytować tabelę',self.editTable)
         self.__buttons.CreateButtons('Dodaj tabelę',550,325,200,30,'none',35,35,'Kliknij aby dodać nową tabelę',self.createTable)
         self.__buttons.CreateButtons('Usuń tabelę',550,375,200,30,'none',35,35,'Kliknij aby usunąć tabelę',self.removeTable)
-        self.__buttons.CreateButtons('Zakończ',550,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.Cancel)
+        self.__buttons.CreateButtons('Otwórz plik',300,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.loadStructure)
+        self.__buttons.CreateButtons('Zakończ',550,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.end)
 
         self.__comboBox1 = QComboBox(self)
         self.__comboBox1.move(400,125)
@@ -65,13 +66,23 @@ class MainWindow(QMainWindow):
         self.__comboBox2.adjustSize()
 
         self.show()
-
+    def end(self):
+        self.writeFile=WriteFile(self.__ProjectModel)
+        self.writeFile.setModal(True)
+        self.writeFile.exec()
+        self.close()
     def passFunc(self):
         pass
 
     def showStructure(self):
 
         self.__ProjectModel.showStructure()
+
+    def loadStructure(self):
+        self.loadFile=LoadFile(self.__ProjectModel, self.__comboBox1)
+        self.loadFile.setModal(True)
+        self.loadFile.exec()
+
 
     def editTable(self):
         """
@@ -124,10 +135,8 @@ class MainWindow(QMainWindow):
         try:
             currentText = self.__comboBox1.currentText()
             self.__ProjectController.checkRemovedTableName(currentText)
-            self.confirmWindow()
-            index=self.__ProjectModel.returnTableIndex(self.__ProjectModel.getStructure(),currentText)+1
-            self.__ProjectModel.removeTable(currentText)
-            self.__comboBox1.removeItem(index)
+            self.confirmWindow(currentText)
+
             #self.setComboBox1()
 
         except Exception as e:
@@ -151,15 +160,108 @@ class MainWindow(QMainWindow):
         warning.setModal(True)
         warning.exec()
 
-    def confirmWindow(self):
+    def confirmWindow(self,tableName):
         """
         Confirm window method
         this method initates new ConfirmWindow object
         """
-        confirm = ConfirmWindow(self.__ProjectModel)
+        confirm = ConfirmWindow(self.__ProjectModel,self.__comboBox1,tableName)
         confirm.setModal(True)
         confirm.exec()
 
+class LoadFile(QDialog):
+    def __init__(self, ProjectModel:ProjectModel, comboBox:QComboBox):
+        super().__init__()
+        self.__title='Otwórz'
+        self.__top=400
+        self.__left=400
+        self.__width=400
+        self.__height=150
+        self.__buttons=MyButton(self)
+        self.__labels=MyLabel(self)
+        self.__ProjectModel=ProjectModel
+        self.__comboBox=comboBox
+        self.InitWindow()
+    def InitWindow(self):
+        """
+        Init Window method
+        this method sets all window widgets
+        """
+        self.setWindowTitle('Dodaj tabele')
+        self.setGeometry(self.__left, self.__top, self.__width, self.__height)
+        self.setFixedSize(400, 150)
+
+        self.__lineedit = QLineEdit(self)
+        self.__lineedit.setGeometry(100,50,250,20)
+        #self.__lineedit.move(100, 50)
+
+        self.__labels.createLabel('Ścieżka:', 40, 50)
+        self.__buttons.CreateButtons('Wczytaj', 10, 110, 180, 30, 'none', 40, 40, 'Kliknij aby dodać nową kolumne do tabeli', self.load)
+        self.__buttons.CreateButtons('Anuluj', 210, 110, 180, 30, 'none', 40, 40, 'Kliknij aby dodać tabele',self.close)
+    def load(self):
+        try:
+            path=self.__lineedit.text()
+            newTables=self.__ProjectModel.readFromFile(path)
+            for x in newTables:
+                self.__comboBox.addItem(x)
+            self.close()
+        except:
+            warning=WarningWindow('Wprowadzono błędną ścieżkę!')
+            warning.setModal(True)
+            warning.exec()
+
+
+class WriteFile(QDialog):
+    """
+    Write to file window class
+    """
+    def __init__(self, ProjectModel:ProjectModel):
+        """
+        Write to file class constructor
+
+        :param ProjectModel: Project model (ProjectModel)
+        """
+        super().__init__()
+        self.__title='Zapisać strukturę?'
+        self.__top=400
+        self.__left=400
+        self.__width=400
+        self.__height=150
+        self.__buttons=MyButton(self)
+        self.__labels=MyLabel(self)
+        self.__ProjectModel=ProjectModel
+        self.InitWindow()
+    def InitWindow(self):
+        """
+        Init Window method
+        this method sets all window widgets
+        """
+        self.setWindowTitle(self.__title)
+        self.setGeometry(self.__left, self.__top, self.__width, self.__height)
+        self.setFixedSize(400, 150)
+
+        self.__lineedit = QLineEdit(self)
+        self.__lineedit.setGeometry(100,50,250,20)
+        #self.__lineedit.move(100, 50)
+
+        self.__labels.createLabel('Ścieżka:', 40, 50)
+        self.__buttons.CreateButtons('Zapisz', 10, 110, 180, 30, 'none', 40, 40, 'Kliknij aby zapisać strukturę', self.write)
+        self.__buttons.CreateButtons('Nie zapisuj', 210, 110, 180, 30, 'none', 40, 40, 'Nie zapisuj struktury',self.close)
+
+    def write(self):
+        """
+        write method
+        this method calls out writeToFile method (ProjectModel)
+        """
+        try:
+            path=self.__lineedit.text()
+            self.__ProjectModel.writeToFile(path)
+
+            self.close()
+        except:
+            warning=WarningWindow('Błąd zapisywania!')
+            warning.setModal(True)
+            warning.exec()
 
 class AddTable(QDialog):
     """
@@ -369,7 +471,7 @@ class WarningWindow(QDialog):
 
 class ConfirmWindow(QDialog):
 
-    def __init__(self, ProjectModel):
+    def __init__(self, ProjectModel,comboBox ,tableName):
         super().__init__()
         self.__windowTitle = 'Usunąć tabele?'
         self.__top=300
@@ -379,6 +481,8 @@ class ConfirmWindow(QDialog):
         self.__buttons = MyButton(self)
         self.__Labels = MyLabel(self)
         self.__ProjectModel=ProjectModel
+        self.__tableName=tableName
+        self.__comboBox=comboBox
         self.InitWindow()
 
     def InitWindow(self):
@@ -386,13 +490,15 @@ class ConfirmWindow(QDialog):
         self.setFixedSize(250,150)
         self.setWindowTitle(self.__windowTitle)
         self.__Labels.createLabel(self.__windowTitle,90,45)
-        self.__buttons.CreateButtons('Usuń',40,90,80,30,'none',0,0,'miau',self.close)
+        self.__buttons.CreateButtons('Usuń',40,90,80,30,'none',0,0,'miau',self.remove)
         self.__buttons.CreateButtons('Anuluj',130,90,80,30,'none',0,0,'miau',self.close)
         self.show()
 
-    def Cancel(self):
-        self.__ProjectModel.ProjectController.cancel()
-
+    def remove(self):
+        index = self.__ProjectModel.returnTableIndex(self.__ProjectModel.getStructure(), self.__tableName) + 1
+        self.__ProjectModel.removeTable(self.__tableName)
+        self.__comboBox.removeItem(index)
+        self.close()
 
 class editTableWindow(QDialog):
     """
@@ -452,6 +558,8 @@ class editTableWindow(QDialog):
         self.tableWidget.setColumnCount(self.__numberOfColumns)
         columnNames=''
         for x, y in zip(self.__ProjectModel.getTable(self.__tableName).getColumnDict(),self.__ProjectModel.getTable(self.__tableName).getColumnDict().values()):
+            print('Kurde kolumny ')
+            self.__ProjectModel.showStructure()
             columnNames=columnNames+x+' ['+self.__ProjectModel.getTypeDict()[y]+']'+','
 
         self.tableWidget.setHorizontalHeaderLabels(columnNames.split(','))
@@ -490,9 +598,10 @@ class editTableWindow(QDialog):
                 row = []
                 for y in range(self.__numberOfColumns):
 
-                    self.__ProjectController.checkEnteredType(self.tableWidget.item(x,y).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[y])
+                    #self.__ProjectController.checkEnteredType(self.tableWidget.item(x,y).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[y])
 
                     row.append(self.tableWidget.item(x,y).text())
+                    z=self.tableWidget.item(x,y).ItemType()
 
                 self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
                 content.append(row)

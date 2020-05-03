@@ -72,8 +72,5 @@ class ProjectController:
         else:
             value = eval(columnType)(value)
 
-    def cancel(self):
-
-        raise Exception('')
 
 

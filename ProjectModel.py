@@ -12,38 +12,25 @@ class ProjectModel:
         private parameter __tableStructure list is used to storage tables
         """
         self.__tableStructure = []
+        self.__tableNames=[]
         self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float'}
         self.getStructure = lambda: self.__tableStructure
         self.getTypeDict = lambda: self.__typeDict
 
 
-    def addTable(self, newTableStructure:Table):
+    def addTable(self, table:Table):
         """
         Adding table method
         This method adds new table classes to model's table structure
 
-        :param newTableStructure: Table class
+        :param table: Table class
 
         """
-        self.__tableStructure.append(newTableStructure)
-
-
-    def createTable(self,tableName:str, numberOfColumns:int, numberOfRows:int,columnDict:dict, content:list):
-        """
-        Create table method
-        This method creates new table class instance and adds it to model's table structure
-
-        :param tableName: table name (str)
-        :param numberOfColumns: number of table columns (int)
-        :param numberOfRows: number of table rows (int)
-        :param columnDict: Column Dictionary (dict)
-            (this dictionary stores column names with column types)
-        :param content: table content (list)
-        """
-        newTable = Table(tableName,numberOfColumns,numberOfRows,columnDict,content)
-
-        self.addTable(newTable)
-
+        if table.getTableName() in self.__tableNames:
+            raise Exception('Tabela istnieje')
+        else:
+            self.__tableStructure.append(table)
+            self.__tableNames.append(table.getTableName())
 
     def removeTable(self,tableName:str):
         """
@@ -59,6 +46,7 @@ class ProjectModel:
             if x.getTableName() == tableName:
 
                 self.__tableStructure.remove(x)
+                self.__tableNames.remove(x.getTableName())
 
             helpIndex = helpIndex+1
 
@@ -108,7 +96,6 @@ class ProjectModel:
     def showStructure(self):
 
         for x in self.__tableStructure:
-
             print(x)
 
 
@@ -164,19 +151,24 @@ class ProjectModel:
         this method loads tables structure from file with extension ".txt"
 
         :param fileName: file name (str)
+        :return list
         """
         l = []
+        newTables=[]
         i = 0
         with open(fileName,'r') as f:
             for lines in f:
                 if i%5 == 0:
                     l.append(lines.strip())
+                    newTables.append(lines.strip())
                 else:
                     l.append(eval(lines.strip()))
                 if i%5 == 4:
-                    self.createTable(*l)
+                    #self.createTable(*l)
+                    self.addTable(Table(*l))
                     l=[]
                 i = i + 1
+        return newTables
 
     def returnTableIndex(self, tableList, tableName:str):
         """

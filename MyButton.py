@@ -15,7 +15,7 @@ class MyButton():
         """
         self.__window=window
 
-    def CreateButtons(self, text: str, x:float, y:float, w:float, h:float, icon: str, ix:float, iy:float, tip: str,fun):
+    def CreateButtons(self, text: str, x:float, y:float, w:float, h:float, icon: str, ix:int, iy:int, tip: str,fun):
         """
         Create buttons function
 

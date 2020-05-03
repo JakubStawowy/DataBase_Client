@@ -17,13 +17,14 @@ class Table:
         self.__tableName = tableName
         self.__numberOfColumns = numberOfColumns
         self.__numberOfRows = numberOfRows
-        self.__columnDict = columnDict
+        self.__columnDict = columnDict.copy()
+        self.__content = content.copy()
+
         self.__columnTypesList = []
         self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float'}
 
         for x in self.__columnDict.values():
             self.__columnTypesList.append(x)
-        self.__content = content
 
         self.getTableName=lambda :self.__tableName
         self.getColumnDict=lambda :self.__columnDict
@@ -68,7 +69,9 @@ class Table:
         :param columnName: column name (str)
         :param columnType: columnt data type (str)
         """
+        print('Dodaje klucz ',columnName,' do slownika: ',self.__columnDict)
         self.__columnDict[columnName]=columnType
+
         self.__numberOfColumns=self.__numberOfColumns+1
         self.__columnTypesList.append(self.__typeDict[columnType])
 
@@ -91,5 +94,3 @@ class Table:
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
 
-table=Table('asd',2,2,{'asd':'int','cx':'float'},[])
-print(type(eval('2.0')))
