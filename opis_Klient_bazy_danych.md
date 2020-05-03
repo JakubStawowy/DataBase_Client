@@ -1,10 +1,10 @@
 ## DataBase_Client
 
-#Temat projektu: Klient Bazy Danych
+###Temat projektu: Klient Bazy Danych
 
-#Autor: Jakub Stawowy
+Autor: Jakub Stawowy
 
-#Link do projektu na platformie github: https://github.com/JakubStawowy/DataBase_Client
+Link do projektu na platformie github: https://github.com/JakubStawowy/DataBase_Client
 
 Opis projektu:
 1) Jest to program udający prostą bazę danych. Pozwala on na tworzenie prostych tabel, zapis oraz wyszukiwanie w nich danych. 
@@ -31,7 +31,7 @@ Opis projektu:
 11) Okno wyszukiwania zawiera pole tekstowe pozwalące na wpisanie odpowiedniego wyrażenia-lambda na którego podstawie sprawdzane są dane w wybranej przez nas tabeli (jeśli klient nie wie jak wygląda wyrażenie-lambda - jest możliwość wyświetlenia przykładu z objaśnieniem działania). Wyniki wyszukiwania wyświetlane są w nowym oknie w postaci tabeli zawierającej tylko te rekordy, dla których wyrażenie zwróciło wartość true.
 12) Przy zamykaniu programu klient ma możliwość zapisu tabel w postaci struktury wpisanej w plik z rozszerzeniem '.txt'. Jest również możliwość wczytywania takiego pliku za pomocą przycisku "Otwórz plik". Okno otwierania pliku zawiera pole tekstowe, do którego należy wpisać ścieżkę lokalizacji pliku.
 
-#Testy
+Testy
 
 1) Utworzenie tabeli "test1" z kolumnami liczbową "ID" (typ int), dwoma tekstowymi "imię" oraz "nazwisko" oraz liczbową "wzrost" (typ float).
 2) Dodanie wiersza do tabeli "test1" z danymi "1","Roch","Przyłbipięt","1.50" - oczekiwane powodzenie.
