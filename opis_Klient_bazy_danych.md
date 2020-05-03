@@ -1,6 +1,6 @@
 ## DataBase_Client
 
-##Temat projektu: Klient Bazy Danych
+Temat projektu: Klient Bazy Danych
 
 Autor: Jakub Stawowy
 
@@ -10,18 +10,18 @@ Opis projektu:
 1) Jest to program udający prostą bazę danych. Pozwala on na tworzenie prostych tabel, zapis oraz wyszukiwanie w nich danych. 
 2) Każda tabela może zawierać dowolną ilość kolumn i wierszy. Ilość, nazwę oraz typ danych w kolumnie deklaruje się podczas procesu tworzenia nowej tabeli (później nie ma już możliwości zmiany ilośći kolumn), natomiast wiersze dodajemy przy edytowaniu tabeli lub używając funkcji "Dodaj wiersz".
 3) Tabela może zawierać dane o następujących typach:
-  a) int
-  b) int (Auto-increment)
-  c) float
-  d) str
+  * int
+  * int (Auto-increment)
+  * float
+  * str
 4) Program jest oparty na wzorcu architektonicznym MVC (Model-View-Controller) i jest      
  podzielony na:
-  a) Moduł ProjectModel.py zawierający Klasę ProjectModel przechowującą strukturę tabel (tableStructure) oraz zawierającą wszelkie metody operujące na tabelach (dodawanie tabeli do struktury, usuwanie tabeli ze struktury, dodawanie rekordu do tabeli, wyszukiwanie tabeli, przeszukiwanie tabeli, wyszukiwanie rekordu w tabeli, zapis/odczyt z pliku)
-  b) Moduł ProjectController.py zawierający Klasę ProjectController przechowującą metody kontrolujące dane wprowadzane przez użytkownika (nazwy tabel, nazwy kolumn, typ kolumn, typ danych w kolumnach)
-  c) Moduł ProjectGUI.py zawierający wszelkie klasy dziedziczące po klasach z biblioteki QT (QMainWindow, QDialog).
-  d) Moduł Table.py zawierający klasę Table przechowującą podstawową strukturę tabeli (Nazwa tabeli, ilość kolumn, ilość wierszy, słownik nazw i typów kolumn, kontent tabeli) oraz podstawowe metody operujące na danych (dodaj/usuń wiersz, dodaj kolumne, ustawianie poszczgólnych parametrów)
-  e) Moduł MyLabel.py przechowujący klasę MyLabel która zawiera metodę tworzącą etykietę w danym oknie (metaklasie)
-  f) Moduł MyButton.py przechowujący klasę MyButton która zawiera metodę tworzącą przycisk w danym oknie (metaklasie)
+  * Moduł ProjectModel.py zawierający Klasę ProjectModel przechowującą strukturę tabel (tableStructure) oraz zawierającą wszelkie metody operujące na tabelach (dodawanie tabeli do struktury, usuwanie tabeli ze struktury, dodawanie rekordu do tabeli, wyszukiwanie tabeli, przeszukiwanie tabeli, wyszukiwanie rekordu w tabeli, zapis/odczyt z pliku)
+  * Moduł ProjectController.py zawierający Klasę ProjectController przechowującą metody kontrolujące dane wprowadzane przez użytkownika (nazwy tabel, nazwy kolumn, typ kolumn, typ danych w kolumnach)
+  * Moduł ProjectGUI.py zawierający wszelkie klasy dziedziczące po klasach z biblioteki QT (QMainWindow, QDialog).
+  * Moduł Table.py zawierający klasę Table przechowującą podstawową strukturę tabeli (Nazwa tabeli, ilość kolumn, ilość wierszy, słownik nazw i typów kolumn, kontent tabeli) oraz podstawowe metody operujące na danych (dodaj/usuń wiersz, dodaj kolumne, ustawianie poszczgólnych parametrów)
+  * Moduł MyLabel.py przechowujący klasę MyLabel która zawiera metodę tworzącą etykietę w danym oknie (metaklasie)
+  * Moduł MyButton.py przechowujący klasę MyButton która zawiera metodę tworzącą przycisk w danym oknie (metaklasie)
 5) Główne okno (MainWindow) zawiera przyciski: "Dodaj tabelę", "Usuń tabelę", "Edytuj tabelę", "Usuń wiersz", "Edytuj wiersz", "Wyszukaj" oraz dwie listy (QComboBox - pierwsza zawiera wylistowane nazwy tabel, druga zaś po wyborze tabeli listuje jej rekordy)
 6) Okno dodawania tabeli zawiera przyciski: "Dodaj kolumnę", "Dodaj tabelę" oraz "Anuluj". Zawiera również pole tekstowe pozwalające na wpisanie nazwy tabeli oraz etykietę wyświetlającą ilość kolumn w tworzonej tabeli. Jeżeli nazwa tabeli jest pusta albo ilość kolumn jest równa zero - za sprawą kontrolera rzucany jest odpowiedni wyjątek (wyświetlaja się okienko ostrzegawcze)
 7) Okno dodawania kolumny zawiera przyciski: "Dodaj kolumnę", "Anuluj". Zawiera również pole tekstowe pozwalające na wpisanie nazwy kolumny oraz listę z której użytkownik może wybrać typ danych w kolumnie. Jeżeli nazwa kolumny jest pusta lub typ nie został wybrany - rzucany jest odpowiedni wyjątek (wyświetla się okienko ostrzegawcze)
