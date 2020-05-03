@@ -1,6 +1,6 @@
 ## DataBase_Client
 
-###Temat projektu: Klient Bazy Danych
+##Temat projektu: Klient Bazy Danych
 
 Autor: Jakub Stawowy
 
