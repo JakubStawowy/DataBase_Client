@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
 
         self.__buttons.CreateButtons('Edytuj wiersz',550,125,200,30,'none',40,40,'Kliknij aby edytować wiersz',self.passFunc)
         self.__buttons.CreateButtons('Dodaj wiersz',550,175,200,30,'none',35,35,'Kliknij aby dodać wiersz',self.passFunc)
-        self.__buttons.CreateButtons('Usuń wiersz',550,225,200,30,'none',35,35,'Kliknij aby usunąć wiersz',self.passFunc)
+        self.__buttons.CreateButtons('Usuń wiersz',550,225,200,30,'none',35,35,'Kliknij aby usunąć wiersz',self.removeRow)
         self.__buttons.CreateButtons('Edytuj tabelę',550,275,200,30,'none',35,35,'Kliknij aby edytować tabelę',self.editTable)
         self.__buttons.CreateButtons('Dodaj tabelę',550,325,200,30,'none',35,35,'Kliknij aby dodać nową tabelę',self.createTable)
         self.__buttons.CreateButtons('Usuń tabelę',550,375,200,30,'none',35,35,'Kliknij aby usunąć tabelę',self.removeTable)
@@ -73,10 +73,15 @@ class MainWindow(QMainWindow):
         self.close()
     def passFunc(self):
         pass
+    def removeRow(self):
+        """
+        removeRow method
+        this method calls out removeRow method (ProjectModel)
+        """
+        tableName = self.__comboBox1.currentText()
+        confirmRemoveRow = ConfirmRemoveRowWindow(self.__ProjectModel,self.__comboBox2,tableName)
 
-    def showStructure(self):
 
-        self.__ProjectModel.showStructure()
 
     def loadStructure(self):
         self.loadFile=LoadFile(self.__ProjectModel, self.__comboBox1)
@@ -410,6 +415,7 @@ class AddColumnWindow(QDialog):
         self.comboBox.addItem('Wybierz Typ')
         self.comboBox.addItem('Tekst')
         self.comboBox.addItem('Liczba całkowita')
+        self.comboBox.addItem('Liczba porządkowa')
         self.comboBox.addItem('Liczba rzeczywista')
         self.comboBox.move(120, 60)
 
@@ -500,6 +506,41 @@ class ConfirmWindow(QDialog):
         self.__comboBox.removeItem(index)
         self.close()
 
+
+class ConfirmRemoveRowWindow(QDialog):
+
+    def __init__(self, ProjectModel,comboBox ,tableName):
+        super().__init__()
+        self.__windowTitle = 'Usunąć wiersz?'
+        self.__top=300
+        self.__left=450
+        self.__width = 250
+        self.__height=150
+        self.__buttons = MyButton(self)
+        self.__Labels = MyLabel(self)
+        self.__ProjectModel=ProjectModel
+        self.__tableName=tableName
+        self.__comboBox=comboBox
+        self.InitWindow()
+
+    def InitWindow(self):
+        self.setGeometry(self.__left,self.__top,self.__width,self.__height)
+        self.setFixedSize(250,150)
+        self.setWindowTitle(self.__windowTitle)
+        self.__Labels.createLabel(self.__windowTitle,90,45)
+        self.__buttons.CreateButtons('Usuń',40,90,80,30,'none',0,0,'miau',self.remove)
+        self.__buttons.CreateButtons('Anuluj',130,90,80,30,'none',0,0,'miau',self.close)
+        self.show()
+
+    def remove(self):
+        x = self.__comboBox.currentText().strip('[]')
+        y = x.split(', ')
+        l = [y[z].strip('\'') for z in range(len(y))]
+        self.__comboBox.removeItem(self.__ProjectModel.getRowIndex(self.__tableName, l) + 1)
+        self.__ProjectModel.removeRow(self.__tableName, l)
+        self.close()
+
+
 class editTableWindow(QDialog):
     """
     Edit table class
@@ -558,7 +599,6 @@ class editTableWindow(QDialog):
         self.tableWidget.setColumnCount(self.__numberOfColumns)
         columnNames=''
         for x, y in zip(self.__ProjectModel.getTable(self.__tableName).getColumnDict(),self.__ProjectModel.getTable(self.__tableName).getColumnDict().values()):
-            print('Kurde kolumny ')
             self.__ProjectModel.showStructure()
             columnNames=columnNames+x+' ['+self.__ProjectModel.getTypeDict()[y]+']'+','
 
@@ -583,6 +623,7 @@ class editTableWindow(QDialog):
         self.__numberOfRows=self.__numberOfRows+1
         self.tableWidget.setRowCount(self.__numberOfRows)
         for y in range(self.__numberOfColumns):
+
             self.tableWidget.setItem(self.__numberOfRows-1,y,QTableWidgetItem(''))
 
 

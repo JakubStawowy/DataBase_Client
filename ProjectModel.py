@@ -13,7 +13,7 @@ class ProjectModel:
         """
         self.__tableStructure = []
         self.__tableNames=[]
-        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float'}
+        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int(Auto-Increment)'}
         self.getStructure = lambda: self.__tableStructure
         self.getTypeDict = lambda: self.__typeDict
 
@@ -92,6 +92,15 @@ class ProjectModel:
             if x.getTableName()==tableName:
 
                 x.removeRow(rowList)
+                x.numberOfRowsDeincrement()
+    def getRowIndex(self,tableName:str,row:list):
+        index=0
+        for x in self.getTable(tableName).getContent():
+            if x==row:
+                return index
+            else:
+                index=index+1
+
 
     def showStructure(self):
 

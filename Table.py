@@ -21,7 +21,7 @@ class Table:
         self.__content = content.copy()
 
         self.__columnTypesList = []
-        self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float'}
+        self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float','Liczba porządkowa':'int_auto_increment'}
 
         for x in self.__columnDict.values():
             self.__columnTypesList.append(x)
@@ -41,6 +41,10 @@ class Table:
         this function adds value 1 to table number of rows (this function is called after inserting new row into table)
         """
         self.__numberOfRows = self.__numberOfRows + 1
+
+    def numberOfRowsDeincrement(self):
+
+        self.__numberOfRows = self.__numberOfRows-1
 
     def removeRow(self, rowList):
         """
@@ -86,11 +90,19 @@ class Table:
     def setNumberOfRows(self, numberOfRows:int):
         self.__numberOfRows=numberOfRows
     def setContent(self, content:list):
-
+        print(self.__columnTypesList)
         self.__content=content
-
+        for x in range(self.__numberOfColumns):
+            print('typ:',self.__columnTypesList[x])
+            print('i typ: ')
+            if self.__columnTypesList[x]=='int_auto_increment':
+                print('udalo sie')
+                counter=1
+                for y in range(self.__numberOfRows):
+                    self.__content[y][x]=str(counter)
+                    print(self.__content[y][x])
+                    counter=counter+1
 
     def __str__(self):
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
-
