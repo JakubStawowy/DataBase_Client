@@ -24,7 +24,11 @@ class ProjectController:
             raise Exception('Tabela nie zostala wybrana!')
         else:
             pass
-
+    def checkRemovedRow(self,row:str):
+        if row=='Wybierz rekord':
+            raise Exception('Wiersz nie został wybrany!')
+        else:
+            pass
     def checkColumnName(self,columnName:str):
         """
         Check column name method

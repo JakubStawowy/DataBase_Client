@@ -62,8 +62,12 @@ class Table:
 
         :param content: row content (list)
         """
+        #for x in range(len(self.__columnTypesList)):
+         #   if self.__columnTypesList[x] == 'int_auto_increment':
+          #      content[x]=0
         self.__content.append(content)
         self.__numberOfRows=self.__numberOfRows+1
+        self.setContent(self.__content)
 
     def addColumn(self,columnName:str, columnType:str):
         """
@@ -73,7 +77,6 @@ class Table:
         :param columnName: column name (str)
         :param columnType: columnt data type (str)
         """
-        print('Dodaje klucz ',columnName,' do slownika: ',self.__columnDict)
         self.__columnDict[columnName]=columnType
 
         self.__numberOfColumns=self.__numberOfColumns+1
@@ -90,17 +93,12 @@ class Table:
     def setNumberOfRows(self, numberOfRows:int):
         self.__numberOfRows=numberOfRows
     def setContent(self, content:list):
-        print(self.__columnTypesList)
         self.__content=content
         for x in range(self.__numberOfColumns):
-            print('typ:',self.__columnTypesList[x])
-            print('i typ: ')
             if self.__columnTypesList[x]=='int_auto_increment':
-                print('udalo sie')
                 counter=1
                 for y in range(self.__numberOfRows):
                     self.__content[y][x]=str(counter)
-                    print(self.__content[y][x])
                     counter=counter+1
 
     def __str__(self):

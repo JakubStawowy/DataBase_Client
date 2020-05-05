@@ -13,7 +13,7 @@ class ProjectModel:
         """
         self.__tableStructure = []
         self.__tableNames=[]
-        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int(Auto-Increment)'}
+        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int(Auto-Inc)'}
         self.getStructure = lambda: self.__tableStructure
         self.getTypeDict = lambda: self.__typeDict
 
@@ -62,7 +62,7 @@ class ProjectModel:
             if x.getTableName() == tableName:
                 columnTypes = [types for types in x.getColumnDict().values()] #List comprehession expression which fill new list with column types (int, float, str)
                 try:
-                    helpIndex=0
+                    """helpIndex=0
                     for y in rowList: #Iterating by row components
                         if str(type(y)) != '<class \''+columnTypes[helpIndex]+'\'>':
                             #if row component is not equal to a column type, the exception is raised
@@ -70,10 +70,10 @@ class ProjectModel:
                             raise Exception('Zly typ')
 
                         else:
-                            helpIndex=helpIndex+1
+                            helpIndex=helpIndex+1"""
 
                     x.addRow(rowList) #if there was no exception raised, new row is added
-                    x.numberOfRowsIncrement()
+                    #x.numberOfRowsIncrement()
 
                 except Exception as exc:
                     print(exc)
@@ -100,13 +100,6 @@ class ProjectModel:
                 return index
             else:
                 index=index+1
-
-
-    def showStructure(self):
-
-        for x in self.__tableStructure:
-            print(x)
-
 
     def lambdaBrowse(self, tableName:str):
         """
@@ -191,7 +184,6 @@ class ProjectModel:
         index = 0
 
         for x in tableList:
-            #print("porwonuje: ",x.getTableName()," z ",tableName)
             if x.getTableName() == tableName:
                 return index
             else:
