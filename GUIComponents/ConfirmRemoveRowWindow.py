@@ -32,9 +32,12 @@ class ConfirmRemoveRowWindow(QDialog):
         self.show()
 
     def remove(self):
-        x = self.__comboBox.currentText().strip('[]')
-        y = x.split(', ')
-        l = [y[z].strip('\'') for z in range(len(y))]
-        self.__comboBox.removeItem(self.__ProjectModel.getRowIndex(self.__tableName, l) + 1)
-        self.__ProjectModel.removeRow(self.__tableName, l)
-        self.close()
+        try:
+            x = self.__comboBox.currentText().strip('[]')
+            y = x.split(', ')
+            l = [y[z].strip('\'') for z in range(len(y))]
+            self.__comboBox.removeItem(self.__ProjectModel.getRowIndex(self.__tableName, str(l)) + 1)
+            self.__ProjectModel.removeRow(self.__tableName, l)
+            self.close()
+        except Exception as e:
+            print(e)

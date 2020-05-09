@@ -71,7 +71,7 @@ class ProjectController:
         :param value: value (str)
         :param columnType: column type (str)
         """
-        if columnType == 'str':
+        if columnType == 'str' or columnType == 'int_auto_increment':
             pass
         else:
             value = eval(columnType)(value)

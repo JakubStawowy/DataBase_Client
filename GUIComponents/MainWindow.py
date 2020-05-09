@@ -3,9 +3,11 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox
 
 from GUIComponents.AddRowWindow import AddRowWindow
 from GUIComponents.AddTableWindow import AddTable
+from GUIComponents.BrowseWindow import BrowseWindow
 from GUIComponents.ConfirmRemoveRowWindow import ConfirmRemoveRowWindow
 from GUIComponents.ConfirmWindow import ConfirmWindow
-from GUIComponents.EditRowWindow import editTableWindow
+from GUIComponents.EditRowWindow import EditRowsWindow
+from GUIComponents.EditTableWindow import editTableWindow
 from GUIComponents.LoadFileWindow import LoadFile
 from GUIComponents.WarningWindow import WarningWindow
 from GUIComponents.WriteFileWindow import WriteFile
@@ -13,6 +15,8 @@ from MyButton import MyButton
 from MyLabel import MyLabel
 from ProjectController import ProjectController
 from ProjectModel import ProjectModel
+from Table import Table
+
 
 class MainWindow(QMainWindow):
     """
@@ -48,13 +52,14 @@ class MainWindow(QMainWindow):
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(self.__width, self.__height)
 
-        self.__buttons.CreateButtons('Edytuj wiersz',550,125,200,30,'none',40,40,'Kliknij aby edytować wiersz',self.passFunc)
+        self.__buttons.CreateButtons('Wyszukaj',550,75,200,30,'none',40,40,'Kliknij aby przeszukać tabele',self.browse)
+        self.__buttons.CreateButtons('Edytuj wiersz',550,125,200,30,'none',40,40,'Kliknij aby edytować wiersz',self.editRow)
         self.__buttons.CreateButtons('Dodaj wiersz',550,175,200,30,'none',35,35,'Kliknij aby dodać wiersz',self.addRow)
         self.__buttons.CreateButtons('Usuń wiersz',550,225,200,30,'none',35,35,'Kliknij aby usunąć wiersz',self.removeRow)
         self.__buttons.CreateButtons('Edytuj tabelę',550,275,200,30,'none',35,35,'Kliknij aby edytować tabelę',self.editTable)
         self.__buttons.CreateButtons('Dodaj tabelę',550,325,200,30,'none',35,35,'Kliknij aby dodać nową tabelę',self.createTable)
         self.__buttons.CreateButtons('Usuń tabelę',550,375,200,30,'none',35,35,'Kliknij aby usunąć tabelę',self.removeTable)
-        self.__buttons.CreateButtons('Otwórz plik',300,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.loadStructure)
+        self.__buttons.CreateButtons('Otwórz plik',300,425,200,30,'none',35,35,'Kliknij aby otworzyć plik',self.loadStructure)
         self.__buttons.CreateButtons('Zakończ',550,425,200,30,'none',35,35,'Kliknij aby wyjść z programu',self.end)
 
         self.__comboBox1 = QComboBox(self)
@@ -80,8 +85,40 @@ class MainWindow(QMainWindow):
         self.writeFile.setModal(True)
         self.writeFile.exec()
         self.close()
-    def passFunc(self):
-        pass
+    def browse(self):
+        try:
+            currentTable=self.__comboBox1.currentText()
+            self.__ProjectController.checkRemovedTableName(currentTable)
+            browseWindow=BrowseWindow(self.__ProjectModel,currentTable)
+            browseWindow.setModal(True)
+            browseWindow.exec()
+            self.setComboBox2()
+        except Exception as e:
+            warning = WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
+    def editRow(self):
+        try:
+            currentTable=self.__comboBox1.currentText()
+            currentRow=self.__comboBox2.currentText()
+            self.__ProjectController.checkRemovedTableName(currentTable)
+            self.__ProjectController.checkRemovedRow(currentRow)
+
+
+            newTable=Table(currentTable,self.__ProjectModel.getTable(currentTable).getNumberOfColumns(),1,self.__ProjectModel.getTable(currentTable).getColumnDict(),[self.__ProjectModel.getTableRow(currentTable,self.__ProjectModel.getRowIndex(currentTable,currentRow))])
+
+            editRowWindow=EditRowsWindow(self.__ProjectModel,newTable)
+            editRowWindow.setModal(True)
+            editRowWindow.exec()
+            self.setComboBox2()
+
+        except Exception as e:
+
+            warning=WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
     def removeRow(self):
         """
         removeRow method
@@ -122,6 +159,7 @@ class MainWindow(QMainWindow):
             editTable = editTableWindow(self.__ProjectModel,currentTable)
             editTable.setModal(True)
             editTable.exec()
+            self.setComboBox2()
         except Exception as e:
             warning = WarningWindow(str(e))
             warning.setModal(True)

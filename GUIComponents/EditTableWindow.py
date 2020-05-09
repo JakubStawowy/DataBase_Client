@@ -9,11 +9,11 @@ from ProjectModel import ProjectModel
 from Table import Table
 
 
-class EditRowsWindow(QDialog):
+class editTableWindow(QDialog):
     """
     Edit table class
     """
-    def __init__(self,projectModel:ProjectModel, table:Table):
+    def __init__(self,projectModel:ProjectModel, tableName:str):
         """
         Edit table class constructor
 
@@ -26,15 +26,14 @@ class EditRowsWindow(QDialog):
         self.__left=100
         self.__width=720
         self.__height=600
+        self.__tableName=tableName
         self.__ProjectModel=projectModel
-        self.__table=table
-        self.__tableName=self.__table.getTableName()
         self.__ProjectController = ProjectController()
-        self.__title=self.__tableName
-        self.__numberOfRows=self.__table.getNumberOfRows()
-        self.__numberOfColumns=self.__table.getNumberOfColumns()
-        self.__columnDict=self.__table.getColumnDict()
-        self.__content=self.__table.getContent()
+        self.__title=self.__ProjectModel.getTable(tableName).getTableName()
+        self.__numberOfRows=self.__ProjectModel.getTable(tableName).getNumberOfRows()
+        self.__numberOfColumns=self.__ProjectModel.getTable(tableName).getNumberOfColumns()
+        self.__columnDict=self.__ProjectModel.getTable(tableName).getColumnDict()
+        self.__content=self.__ProjectModel.getTable(tableName).getContent()
 
         self.InitWindow()
 
@@ -45,7 +44,6 @@ class EditRowsWindow(QDialog):
         """
         self.setWindowTitle(self.__title)
         self.setGeometry(self.__left,self.__top,self.__width,self.__height)
-
         self.setTable()
 
         self.vBoxLayout = QVBoxLayout()
@@ -68,7 +66,7 @@ class EditRowsWindow(QDialog):
         self.tableWidget.setRowCount(self.__numberOfRows)
         self.tableWidget.setColumnCount(self.__numberOfColumns)
         columnNames=''
-        for x, y in zip(self.__columnDict,self.__columnDict.values()):
+        for x, y in zip(self.__ProjectModel.getTable(self.__tableName).getColumnDict(),self.__ProjectModel.getTable(self.__tableName).getColumnDict().values()):
             columnNames=columnNames+x+' ['+self.__ProjectModel.getTypeDict()[y]+']'+','
 
         self.tableWidget.setHorizontalHeaderLabels(columnNames.split(','))
@@ -78,11 +76,11 @@ class EditRowsWindow(QDialog):
 
 
     def createButton1(self):
-        self.button1 = QPushButton('Zapisz',self)
-        self.button1.clicked.connect(self.SaveData)
+        self.button1 = QPushButton('Dodaj wiersz',self)
+        self.button1.clicked.connect(self.AddRow)
     def createButton2(self):
-        self.button2 = QPushButton('Wyjdz',self)
-        self.button2.clicked.connect(self.close)
+        self.button2 = QPushButton('Zapisz tabele',self)
+        self.button2.clicked.connect(self.SaveData)
 
     def AddRow(self):
         """
@@ -98,19 +96,27 @@ class EditRowsWindow(QDialog):
 
     def SaveData(self):
         """
-                Add row method
-                this methods increases table's number of rows and adds new empty row to displayed table
-                """
+        Save data method
+        this method swap's table old content with new content (loaded from editTable window)
+        """
         try:
-            for y in range(self.__numberOfRows):
+            content = []
+            self.__ProjectModel.getTable(self.__tableName).setNumberOfRows(0)
+            for x in range(self.__numberOfRows):
                 row = []
                 helpIndex=0
-                for x in range(self.__numberOfColumns):
-                    self.__ProjectController.checkEnteredType(self.tableWidget.item(y, x).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[helpIndex])
-                    row.append(self.tableWidget.item(y, x).text())
-                    helpIndex=helpIndex+1
-                self.__ProjectModel.editRow(self.__tableName, self.__content[y], row)
-            self.close()
-        except Exception as e:
-            print(e)
+                for y in range(self.__numberOfColumns):
+                    self.__ProjectController.checkEnteredType(self.tableWidget.item(x,y).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[helpIndex])
+                    row.append(self.tableWidget.item(x,y).text())
+                    helpIndex = helpIndex+1
+                self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
+                content.append(row)
 
+            self.__ProjectModel.getTable(self.__tableName).setContent(content)
+            self.close()
+
+        except Exception as e:
+
+            warning = WarningWindow('Zly typ wpisywanych danych!')
+            warning.setModal(True)
+            warning.exec()

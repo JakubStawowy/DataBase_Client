@@ -13,7 +13,7 @@ class ProjectModel:
         """
         self.__tableStructure = []
         self.__tableNames=[]
-        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int(Auto-Inc)'}
+        self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int'}
         self.getStructure = lambda: self.__tableStructure
         self.getTypeDict = lambda: self.__typeDict
 
@@ -77,7 +77,10 @@ class ProjectModel:
 
                 except Exception as exc:
                     print(exc)
-
+    def editRow(self,tableName:str,content:list, newContent:list):
+        for x in self.__tableStructure:
+            if x.getTableName()==tableName:
+                x.updateRow(content,newContent)
 
     def removeRow(self,tableName:str,rowList:list):
         """
@@ -93,26 +96,26 @@ class ProjectModel:
 
                 x.removeRow(rowList)
                 x.numberOfRowsDeincrement()
-    def getRowIndex(self,tableName:str,row:list):
+    def getRowIndex(self,tableName:str,row:str):
         index=0
         for x in self.getTable(tableName).getContent():
-            if x==row:
+            if str(x)==row:
                 return index
             else:
                 index=index+1
 
-    def lambdaBrowse(self, tableName:str):
+    def lambdaBrowse(self, tableName:str, lambdaExpression:str):
         """
         Lambda browse method
         this method searches for tables components which meet described conditions
 
         :param tableName: table name (str)
 
-        :return z: table component (type(z))
+        :return: Boolean
         """
         try:
-            lmbd = input('type lambda') #User should type lambda expression
-            columnName = lmbd.split(':')[0][7:] #Lambda expression argument should be the column name user want to search
+            newTable=[]
+            columnName = lambdaExpression.split(':')[0][7:] #Lambda expression argument should be the column name user want to search
             for x in self.__tableStructure: #Iterating by tables
 
                 if x.getTableName()==tableName:
@@ -123,12 +126,10 @@ class ProjectModel:
 
                         helpIndex = 0
                         for z in y: #Iterating by table components
-
-                            if columnNames[helpIndex] == columnName and eval(lmbd)(z) == True:
-                                return z  #if component meet's conditions, component is returned
-
+                            if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnTypesList()[helpIndex]])(z)):
+                                newTable.append(y)
                             helpIndex = helpIndex+1
-
+            return newTable
         except Exception as e:
             print(e)
 
@@ -213,3 +214,6 @@ class ProjectModel:
             if x.getTableName()==tableName:
 
                 return x
+
+pm=ProjectModel()
+pm.addTable(Table('tab1',2,1,{'kol1':'str','kol2':'int'},[[1,2]]))

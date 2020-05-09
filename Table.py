@@ -101,6 +101,21 @@ class Table:
                     self.__content[y][x]=str(counter)
                     counter=counter+1
 
+    def updateRow(self,content:list,newContent:list):
+
+        helpIndex=0
+        for x in self.__content:
+            if x==content:
+                self.__content[helpIndex]=newContent
+            else:
+                helpIndex=helpIndex+1
+    def getRowIndex(self,content:list):
+        helpIndex=0
+        for x in self.__content:
+            if x==content:
+                return helpIndex
+            else:
+                helpIndex=helpIndex+1
     def __str__(self):
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
