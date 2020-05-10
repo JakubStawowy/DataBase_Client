@@ -1,7 +1,8 @@
+from ModelBase import ModelBase
 from ProjectController import ProjectController
 from Table import Table
 
-class ProjectModel:
+class ProjectModel(ModelBase):
     """
     Project Model class
     this class stores data and logical methods
@@ -221,7 +222,3 @@ class ProjectModel:
             if x.getTableName()==tableName:
 
                 return x
-
-
-dict={'kol1':'k1','kol2':'k2'}
-print(dict['kol1'])
