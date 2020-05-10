@@ -1,7 +1,9 @@
 
 from PyQt5.QtWidgets import QComboBox, QDialog, QLineEdit
 
+from Errors import BadLambdaExpressionException
 from GUIComponents.EditRowWindow import EditRowsWindow
+from GUIComponents.WarningWindow import WarningWindow
 from MyButton import MyButton
 from MyLabel import MyLabel
 from ProjectModel import ProjectModel
@@ -50,10 +52,22 @@ class BrowseWindow(QDialog):
     def browse(self):
         try:
             x=self.__ProjectModel.lambdaBrowse(self.__tableName,self.__lineedit.text())
+            print('Czy to tutaj? ',len(x))
             self.close()
-            editTable=EditRowsWindow(self.__ProjectModel,Table(self.__tableName,self.__ProjectModel.getTable(self.__tableName).getNumberOfColumns(),len(x),self.__ProjectModel.getTable(self.__tableName).getColumnDict(),x))
-            editTable.setModal(True)
-            editTable.exec()
-        except Exception as e:
-            print(e)
+            try:
+                editTable=EditRowsWindow(self.__ProjectModel,Table(self.__tableName,self.__ProjectModel.getTable(self.__tableName).getNumberOfColumns(),len(x),self.__ProjectModel.getTable(self.__tableName).getColumnDict(),x))
+            except:
+                raise BadLambdaExpressionException(expression=x)
+            else:
+                editTable.setModal(True)
+                editTable.exec()
 
+        except BadLambdaExpressionException as e:
+            warning = WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
+        except:
+            warning = WarningWindow("Wystąpił problem z wyszukiwaniem danych")
+            warning.setModal(True)
+            warning.exec()

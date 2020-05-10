@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QTableWidget, \
     QTableWidgetItem, QPushButton, QApplication
 
+from Errors import *
 from GUIComponents.WarningWindow import WarningWindow
 from ProjectController import ProjectController
 from ProjectModel import ProjectModel
@@ -106,6 +107,7 @@ class editTableWindow(QDialog):
                 row = []
                 helpIndex=0
                 for y in range(self.__numberOfColumns):
+
                     self.__ProjectController.checkEnteredType(self.tableWidget.item(x,y).text(),self.__ProjectModel.getTable(self.__tableName).getColumnTypesList()[helpIndex])
                     row.append(self.tableWidget.item(x,y).text())
                     helpIndex = helpIndex+1
@@ -115,8 +117,14 @@ class editTableWindow(QDialog):
             self.__ProjectModel.getTable(self.__tableName).setContent(content)
             self.close()
 
-        except Exception as e:
+        except BadEnteredTypeException as e:
 
-            warning = WarningWindow('Zly typ wpisywanych danych!')
+            warning = WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
+        except Exception:
+
+            warning = WarningWindow("Problemy z zapisywaniem danych")
             warning.setModal(True)
             warning.exec()

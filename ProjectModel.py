@@ -13,6 +13,7 @@ class ProjectModel:
         """
         self.__tableStructure = []
         self.__tableNames=[]
+        #self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int'}
         self.__typeDict={'Tekst':'str','Liczba całkowita':'int','Liczba rzeczywista':'float','Liczba porządkowa':'int'}
         self.getStructure = lambda: self.__tableStructure
         self.getTypeDict = lambda: self.__typeDict
@@ -115,20 +116,26 @@ class ProjectModel:
         """
         try:
             newTable=[]
+
             columnName = lambdaExpression.split(':')[0][7:] #Lambda expression argument should be the column name user want to search
             for x in self.__tableStructure: #Iterating by tables
 
                 if x.getTableName()==tableName:
 
                     columnNames = [colName for colName in x.getColumnDict().keys()] #List comprehession expression which fill new list with column names
-
+                    print('kolumny: ',columnNames)
                     for y in x.getContent(): #Iterating by rows
 
                         helpIndex = 0
                         for z in y: #Iterating by table components
-                            if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnTypesList()[helpIndex]])(z)):
+                            print('Checkpoint')
+
+                            #print('tutej ',self.getTable(tableName).getColumnDict().keys()[0])
+                            if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnTypesListP()[helpIndex]])(z)):
+                            #if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnDict().values()[helpIndex]])(z)):
                                 newTable.append(y)
                             helpIndex = helpIndex+1
+
             return newTable
         except Exception as e:
             print(e)
@@ -215,5 +222,6 @@ class ProjectModel:
 
                 return x
 
-pm=ProjectModel()
-pm.addTable(Table('tab1',2,1,{'kol1':'str','kol2':'int'},[[1,2]]))
+
+dict={'kol1':'k1','kol2':'k2'}
+print(dict['kol1'])

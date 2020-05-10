@@ -1,6 +1,7 @@
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QLabel
 
+from Errors import *
 from GUIComponents.AddColumnWindow import AddColumnWindow
 from GUIComponents.WarningWindow import WarningWindow
 from MyButton import MyButton
@@ -93,7 +94,13 @@ class AddTable(QDialog):
             self.__newTable.setTableName(self.__lineedit.text())
             self.__ProjectModel.addTable(self.__newTable)
             self.close()
-        except Exception as e:
+
+        except (EmptyTableNameException, NoColumnTableException) as e:
             warning=WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
+        except Exception:
+            warning = WarningWindow("Wystąpiły problemy z dodawaniem tabeli")
             warning.setModal(True)
             warning.exec()

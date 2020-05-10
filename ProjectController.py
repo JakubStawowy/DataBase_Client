@@ -1,3 +1,6 @@
+from Errors import *
+
+
 class ProjectController:
     """
     Project Controller class
@@ -10,7 +13,7 @@ class ProjectController:
         :param tableName: table name (str)
         """
         if tableName == '':
-            raise Exception('Nazwa tabeli nie może być pusta!')
+            raise EmptyTableNameException()
         else:
             pass
 
@@ -21,12 +24,12 @@ class ProjectController:
         :param tableName: table name (str)
         """
         if tableName == 'Wybierz tabele':
-            raise Exception('Tabela nie zostala wybrana!')
+            raise NoTableChosenException()
         else:
             pass
     def checkRemovedRow(self,row:str):
         if row=='Wybierz rekord':
-            raise Exception('Wiersz nie został wybrany!')
+            raise NoRowChosenException()
         else:
             pass
     def checkColumnName(self,columnName:str):
@@ -36,7 +39,7 @@ class ProjectController:
         :param columnName: column name (str)
         """
         if columnName=='':
-            raise Exception('Nazwa kolumny nie może być pusta!')
+            raise EmptyColumnNameException()
         else:
             pass
     def checkColumnType(self,columnType):
@@ -47,7 +50,7 @@ class ProjectController:
         :param columnType: column data type (str)
         """
         if columnType == 'Wybierz Typ':
-            raise Exception('Wybierz typ danych!')
+            raise NoColumnTypeChosenException()
         else:
             pass
 
@@ -59,7 +62,7 @@ class ProjectController:
         :param numberOfColumns: number of columns (int)
         """
         if numberOfColumns == 0:
-            raise Exception('Liczba kolumn nie może być równa zero!')
+            raise NoColumnTableException()
         else:
             pass
 
@@ -74,7 +77,12 @@ class ProjectController:
         if columnType == 'str' or columnType == 'int_auto_increment':
             pass
         else:
-            value = eval(columnType)(value)
+            try:
+                value = eval(columnType)(value)
+            except:
+                raise BadEnteredTypeException(expression=value)
+
+
 
 
 

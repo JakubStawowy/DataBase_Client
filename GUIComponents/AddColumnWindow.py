@@ -1,6 +1,7 @@
 
 from PyQt5.QtWidgets import QComboBox, QDialog, QLineEdit
 
+from Errors import NoColumnTypeChosenException, EmptyColumnNameException
 from MyButton import MyButton
 from MyLabel import MyLabel
 from ProjectController import ProjectController
@@ -69,16 +70,13 @@ class AddColumnWindow(QDialog):
             self.__Table.addColumn(columnName,columnType)
             self.close()
 
-        except Exception as e:
+        except (NoColumnTypeChosenException, EmptyColumnNameException) as e:
 
-            self.warinngWindow(str(e))
+            warning = WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
 
-    def warinngWindow(self,text):
-        """
-        Warning window method
-        this method initates new WaringWindow object
-        :param text: warning message (str)
-        """
-        warning=WarningWindow(text)
-        warning.setModal(True)
-        warning.exec()
+        except:
+            warning = WarningWindow("Wystąpiły problemy z dodawaniem kolumny")
+            warning.setModal(True)
+            warning.exec()

@@ -18,13 +18,19 @@ class Table:
         self.__numberOfColumns = numberOfColumns
         self.__numberOfRows = numberOfRows
         self.__columnDict = columnDict.copy()
+        print(self.__columnDict)
         self.__content = content.copy()
 
         self.__columnTypesList = []
+        self.__columnTypesListP = []
+
+        #self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float','Liczba porządkowa':'int_auto_increment'}
         self.__typeDict = {'Tekst': 'str', 'Liczba całkowita': 'int', 'Liczba rzeczywista': 'float','Liczba porządkowa':'int_auto_increment'}
 
         for x in self.__columnDict.values():
-            self.__columnTypesList.append(x)
+            self.__columnTypesList.append(self.__typeDict[x])
+            self.__columnTypesListP.append(x)
+
 
         self.getTableName=lambda :self.__tableName
         self.getColumnDict=lambda :self.__columnDict
@@ -33,6 +39,8 @@ class Table:
         self.getNumberOfRows = lambda : self.__numberOfRows
         self.getRow = lambda index: self.__content[index]
         self.getColumnTypesList = lambda : self.__columnTypesList
+        self.getColumnTypesListP = lambda : self.__columnTypesListP
+
 
 
     def numberOfRowsIncrement(self):
