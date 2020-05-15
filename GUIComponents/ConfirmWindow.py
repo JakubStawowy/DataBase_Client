@@ -5,7 +5,7 @@ from MyLabel import MyLabel
 
 class ConfirmWindow(QDialog):
 
-    def __init__(self, ProjectModel,comboBox ,tableName):
+    def __init__(self, projectModel,comboBox ,tableName):
         super().__init__()
         self.__windowTitle = 'Usunąć tabele?'
         self.__top=300
@@ -14,7 +14,7 @@ class ConfirmWindow(QDialog):
         self.__height=150
         self.__buttons = MyButton(self)
         self.__Labels = MyLabel(self)
-        self.__ProjectModel=ProjectModel
+        self.__projectModel=projectModel
         self.__tableName=tableName
         self.__comboBox=comboBox
         self.InitWindow()
@@ -29,7 +29,7 @@ class ConfirmWindow(QDialog):
         self.show()
 
     def remove(self):
-        index = self.__ProjectModel.returnTableIndex(self.__ProjectModel.getStructure(), self.__tableName) + 1
-        self.__ProjectModel.removeTable(self.__tableName)
+        index = self.__projectModel.returnTableIndex(self.__projectModel.getStructure(), self.__tableName) + 1
+        self.__projectModel.removeTable(self.__tableName)
         self.__comboBox.removeItem(index)
         self.close()

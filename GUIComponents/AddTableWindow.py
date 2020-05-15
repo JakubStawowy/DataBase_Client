@@ -14,7 +14,7 @@ class AddTable(QDialog):
     """
     Add table class
     """
-    def __init__(self, ProjectModel:ProjectModel):
+    def __init__(self, projectModel:ProjectModel):
         """
         Add table class constructor
 
@@ -29,8 +29,8 @@ class AddTable(QDialog):
         self.__height = 200
         self.__buttons = MyButton(self)
         self.__labels = MyLabel(self)
-        self.__ProjectModel=ProjectModel
-        self.__ProjectController = ProjectController()
+        self.__projectModel=projectModel
+        self.__projectController = ProjectController()
         self.__newTable = Table()
         self.getTableName = lambda : self.__newTable.getTableName()
         self.getNumberOfColumns = lambda : self.__newTable.getNumberOfColumns()
@@ -78,7 +78,7 @@ class AddTable(QDialog):
         Add column method
         this method initializes new AddColumnWindow Object and sets counter label
         """
-        self.__addColumn=AddColumnWindow(self.__ProjectModel,self.__newTable)
+        self.__addColumn=AddColumnWindow(self.__projectModel,self.__newTable)
         self.__addColumn.setModal(True)
         self.__addColumn.exec()
         self.counterLabel.setText(str(self.__newTable.getNumberOfColumns()))
@@ -89,10 +89,10 @@ class AddTable(QDialog):
         this method calls out addTable method (ProjectModel)
         """
         try:
-            self.__ProjectController.checkTableName(self.__lineedit.text())
-            self.__ProjectController.checkNumberOfcolumns(self.__newTable.getNumberOfColumns())
+            self.__projectController.checkTableName(self.__lineedit.text())
+            self.__projectController.checkNumberOfcolumns(self.__newTable.getNumberOfColumns())
             self.__newTable.setTableName(self.__lineedit.text())
-            self.__ProjectModel.addTable(self.__newTable)
+            self.__projectModel.addTable(self.__newTable)
             self.close()
 
         except (EmptyTableNameException, NoColumnTableException) as e:

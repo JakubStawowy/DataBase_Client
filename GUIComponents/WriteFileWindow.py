@@ -10,7 +10,7 @@ class WriteFile(QDialog):
     """
     Write to file window class
     """
-    def __init__(self, ProjectModel:ProjectModel):
+    def __init__(self, projectModel:ProjectModel):
         """
         Write to file class constructor
 
@@ -24,7 +24,7 @@ class WriteFile(QDialog):
         self.__height=150
         self.__buttons=MyButton(self)
         self.__labels=MyLabel(self)
-        self.__ProjectModel=ProjectModel
+        self.__projectModel=projectModel
         self.InitWindow()
     def InitWindow(self):
         """
@@ -50,7 +50,7 @@ class WriteFile(QDialog):
         """
         try:
             path=self.__lineedit.text()
-            self.__ProjectModel.writeToFile(path)
+            self.__projectModel.writeToFile(path)
 
             self.close()
         except:

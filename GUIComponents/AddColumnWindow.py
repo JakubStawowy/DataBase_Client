@@ -13,7 +13,7 @@ class AddColumnWindow(QDialog):
     """
     AddColumnWindow class
     """
-    def __init__(self,ProjectModel:ProjectModel, Table:Table):
+    def __init__(self,projectModel:ProjectModel, table:Table):
         """
         AddColumnWindow class constructor
 
@@ -27,9 +27,9 @@ class AddColumnWindow(QDialog):
         self.__height=145
         self.buttons=MyButton(self)
         self.labels=MyLabel(self)
-        self.__ProjectModel=ProjectModel
-        self.__ProjectController = ProjectController()
-        self.__Table=Table
+        self.__projectModel=projectModel
+        self.__projectController = ProjectController()
+        self.__table=table
         self.InitWindow()
 
     def InitWindow(self):
@@ -65,9 +65,9 @@ class AddColumnWindow(QDialog):
         try:
             columnType=self.comboBox.currentText()
             columnName=self.lineedit.text()
-            self.__ProjectController.checkColumnName(columnName)
-            self.__ProjectController.checkColumnType(columnType)
-            self.__Table.addColumn(columnName,columnType)
+            self.__projectController.checkColumnName(columnName)
+            self.__projectController.checkColumnType(columnType)
+            self.__table.addColumn(columnName,columnType)
             self.close()
 
         except (NoColumnTypeChosenException, EmptyColumnNameException) as e:

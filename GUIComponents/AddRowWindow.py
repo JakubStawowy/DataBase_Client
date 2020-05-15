@@ -1,5 +1,8 @@
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QPushButton
+
+from Errors import BadEnteredTypeException
+from GUIComponents.WarningWindow import WarningWindow
 from ProjectController import ProjectController
 from ProjectModel import ProjectModel
 
@@ -21,13 +24,13 @@ class AddRowWindow(QDialog):
         self.__width=720
         self.__height=100
         self.__tableName=tableName
-        self.__ProjectModel=projectModel
-        self.__ProjectController = ProjectController()
-        self.__title=self.__ProjectModel.getTable(tableName).getTableName()
-        self.__numberOfRows=self.__ProjectModel.getTable(tableName).getNumberOfRows()
-        self.__numberOfColumns=self.__ProjectModel.getTable(tableName).getNumberOfColumns()
-        self.__columnDict=self.__ProjectModel.getTable(tableName).getColumnDict()
-        self.__content=self.__ProjectModel.getTable(tableName).getContent()
+        self.__projectModel=projectModel
+        self.__projectController = ProjectController()
+        self.__title=self.__projectModel.getTable(tableName).getTableName()
+        self.__numberOfRows=self.__projectModel.getTable(tableName).getNumberOfRows()
+        self.__numberOfColumns=self.__projectModel.getTable(tableName).getNumberOfColumns()
+        self.__columnDict=self.__projectModel.getTable(tableName).getColumnDict()
+        self.__content=self.__projectModel.getTable(tableName).getContent()
 
         self.InitWindow()
 
@@ -60,9 +63,9 @@ class AddRowWindow(QDialog):
         self.tableWidget.setRowCount(1)
         self.tableWidget.setColumnCount(self.__numberOfColumns)
         columnNames = ''
-        for x, y in zip(self.__ProjectModel.getTable(self.__tableName).getColumnDict(),
-                        self.__ProjectModel.getTable(self.__tableName).getColumnDict().values()):
-            columnNames = columnNames + x + ' [' + self.__ProjectModel.getTypeDict()[y] + ']' + ','
+        for x, y in zip(self.__projectModel.getTable(self.__tableName).getColumnDict(),
+                        self.__projectModel.getTable(self.__tableName).getColumnDict().values()):
+            columnNames = columnNames + x + ' [' + self.__projectModel.getTypeDict()[y] + ']' + ','
 
         self.tableWidget.setHorizontalHeaderLabels(columnNames.split(','))
         for y in range(self.__numberOfColumns):
@@ -74,20 +77,35 @@ class AddRowWindow(QDialog):
     def createButton1(self):
 
         self.button1 = QPushButton('Dodaj wiersz',self)
-        self.button1.clicked.connect(self.AddRow)
+        self.button1.clicked.connect(self.addRow)
 
     def createButton2(self):
 
         self.button2 = QPushButton('Anuluj',self)
         self.button2.clicked.connect(self.close)
 
-    def AddRow(self):
+    def addRow(self):
         """
         Add row method
         this methods increases table's number of rows and adds new empty row to displayed table
         """
-        row = []
-        for x in range(self.__numberOfColumns):
-            row.append(self.tableWidget.item(0,x).text())
-        self.__ProjectModel.addRow(self.__tableName,row)
-        self.close()
+        try:
+            row = []
+            helpIndex=0
+            for x in range(self.__numberOfColumns):
+                self.__projectController.checkEnteredType(self.tableWidget.item(0,x).text(),self.__projectModel.getTable(self.__tableName).getColumnTypesList()[helpIndex])
+                row.append(self.tableWidget.item(0,x).text())
+                helpIndex=helpIndex+1
+            self.__projectModel.addRow(self.__tableName,row)
+            self.close()
+        except BadEnteredTypeException as e:
+
+            warning = WarningWindow(str(e))
+            warning.setModal(True)
+            warning.exec()
+
+        except Exception:
+
+            warning = WarningWindow("Problemy z zapisywaniem danych")
+            warning.setModal(True)
+            warning.exec()

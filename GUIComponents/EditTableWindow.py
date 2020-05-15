@@ -1,13 +1,11 @@
-import sys
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QTableWidget, \
-    QTableWidgetItem, QPushButton, QApplication
+    QTableWidgetItem, QPushButton
 
 from Errors import *
 from GUIComponents.WarningWindow import WarningWindow
 from ProjectController import ProjectController
 from ProjectModel import ProjectModel
-from Table import Table
 
 
 class editTableWindow(QDialog):
@@ -35,6 +33,7 @@ class editTableWindow(QDialog):
         self.__numberOfColumns=self.__ProjectModel.getTable(tableName).getNumberOfColumns()
         self.__columnDict=self.__ProjectModel.getTable(tableName).getColumnDict()
         self.__content=self.__ProjectModel.getTable(tableName).getContent()
+
 
         self.InitWindow()
 
@@ -100,6 +99,7 @@ class editTableWindow(QDialog):
         Save data method
         this method swap's table old content with new content (loaded from editTable window)
         """
+        global content
         try:
             content = []
             self.__ProjectModel.getTable(self.__tableName).setNumberOfRows(0)
@@ -114,11 +114,11 @@ class editTableWindow(QDialog):
                 self.__ProjectModel.getTable(self.__tableName).numberOfRowsIncrement()
                 content.append(row)
 
-            self.__ProjectModel.getTable(self.__tableName).setContent(content)
             self.close()
 
         except BadEnteredTypeException as e:
-
+            content = self.__ProjectModel.getTable(self.__tableName).getContent()
+            print('Ustawiam kontencik: ',content)
             warning = WarningWindow(str(e))
             warning.setModal(True)
             warning.exec()
@@ -128,3 +128,8 @@ class editTableWindow(QDialog):
             warning = WarningWindow("Problemy z zapisywaniem danych")
             warning.setModal(True)
             warning.exec()
+
+        finally:
+            print('No to finalnie kontent = ',content)
+            self.__ProjectModel.getTable(self.__tableName).setNumberOfRows(len(content))
+            self.__ProjectModel.getTable(self.__tableName).setContent(content)

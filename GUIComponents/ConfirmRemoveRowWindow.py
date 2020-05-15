@@ -8,7 +8,7 @@ from MyLabel import MyLabel
 
 class ConfirmRemoveRowWindow(QDialog):
 
-    def __init__(self, ProjectModel,comboBox ,tableName):
+    def __init__(self, projectModel,comboBox ,tableName):
         super().__init__()
         self.__windowTitle = 'Usunąć wiersz?'
         self.__top=300
@@ -17,7 +17,7 @@ class ConfirmRemoveRowWindow(QDialog):
         self.__height=150
         self.__buttons = MyButton(self)
         self.__Labels = MyLabel(self)
-        self.__ProjectModel=ProjectModel
+        self.__projectModel=projectModel
         self.__tableName=tableName
         self.__comboBox=comboBox
         self.InitWindow()
@@ -36,8 +36,8 @@ class ConfirmRemoveRowWindow(QDialog):
             x = self.__comboBox.currentText().strip('[]')
             y = x.split(', ')
             l = [y[z].strip('\'') for z in range(len(y))]
-            self.__comboBox.removeItem(self.__ProjectModel.getRowIndex(self.__tableName, str(l)) + 1)
-            self.__ProjectModel.removeRow(self.__tableName, l)
+            self.__comboBox.removeItem(self.__projectModel.getRowIndex(self.__tableName, str(l)) + 1)
+            self.__projectModel.removeRow(self.__tableName, l)
             self.close()
         except Exception as e:
             print(e)

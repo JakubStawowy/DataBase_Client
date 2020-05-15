@@ -10,7 +10,7 @@ class LoadFile(QDialog):
     """
     Load from file class
     """
-    def __init__(self, ProjectModel:ProjectModel, comboBox:QComboBox):
+    def __init__(self, projectModel:ProjectModel, comboBox:QComboBox):
         """
         Load from file class constructor
         :param ProjectModel: project model (ProjectModel)
@@ -25,7 +25,7 @@ class LoadFile(QDialog):
         self.__height=150
         self.__buttons=MyButton(self)
         self.__labels=MyLabel(self)
-        self.__ProjectModel=ProjectModel
+        self.__projectModel=projectModel
         self.__comboBox=comboBox
         self.InitWindow()
 
@@ -52,7 +52,7 @@ class LoadFile(QDialog):
         """
         try:
             path=self.__lineedit.text()
-            newTables=self.__ProjectModel.readFromFile(path)
+            newTables=self.__projectModel.readFromFile(path)
             for x in newTables:
                 self.__comboBox.addItem(x)
             self.close()

@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
     Main window class
     """
 
-    def __init__(self,ProjectModel:ProjectModel):
+    def __init__(self,projectModel:ProjectModel):
         """
         Main window class constructor
         Constructor sets basic parameters (title, position, MyButton class, MyLabel class)
@@ -39,8 +39,8 @@ class MainWindow(QMainWindow):
         self.__width=800
         self.__buttons=MyButton(self)
         self.__labels=MyLabel(self)
-        self.__ProjectModel=ProjectModel
-        self.__ProjectController = ProjectController()
+        self.__projectModel=projectModel
+        self.__projectController = ProjectController()
         self.InitWindow() #Initating window
 
     def InitWindow(self):
@@ -81,15 +81,15 @@ class MainWindow(QMainWindow):
         this method initializes new writeFile object (window)
         :return:
         """
-        self.writeFile=WriteFile(self.__ProjectModel)
+        self.writeFile=WriteFile(self.__projectModel)
         self.writeFile.setModal(True)
         self.writeFile.exec()
         self.close()
     def browse(self):
         try:
             currentTable=self.__comboBox1.currentText()
-            self.__ProjectController.checkRemovedTableName(currentTable)
-            browseWindow=BrowseWindow(self.__ProjectModel,currentTable)
+            self.__projectController.checkRemovedTableName(currentTable)
+            browseWindow=BrowseWindow(self.__projectModel,currentTable)
             browseWindow.setModal(True)
             browseWindow.exec()
             self.setComboBox2()
@@ -102,13 +102,13 @@ class MainWindow(QMainWindow):
         try:
             currentTable=self.__comboBox1.currentText()
             currentRow=self.__comboBox2.currentText()
-            self.__ProjectController.checkRemovedTableName(currentTable)
-            self.__ProjectController.checkRemovedRow(currentRow)
+            self.__projectController.checkRemovedTableName(currentTable)
+            self.__projectController.checkRemovedRow(currentRow)
 
 
-            newTable=Table(currentTable,self.__ProjectModel.getTable(currentTable).getNumberOfColumns(),1,self.__ProjectModel.getTable(currentTable).getColumnDict(),[self.__ProjectModel.getTableRow(currentTable,self.__ProjectModel.getRowIndex(currentTable,currentRow))])
+            newTable=Table(currentTable,self.__projectModel.getTable(currentTable).getNumberOfColumns(),1,self.__projectModel.getTable(currentTable).getColumnDict(),[self.__projectModel.getTableRow(currentTable,self.__projectModel.getRowIndex(currentTable,currentRow))])
 
-            editRowWindow=EditRowsWindow(self.__ProjectModel,newTable)
+            editRowWindow=EditRowsWindow(self.__projectModel,newTable)
             editRowWindow.setModal(True)
             editRowWindow.exec()
             self.setComboBox2()
@@ -127,10 +127,10 @@ class MainWindow(QMainWindow):
         try:
             tableName = self.__comboBox1.currentText()
             row=self.__comboBox2.currentText()
-            self.__ProjectController.checkRemovedTableName(tableName)
-            self.__ProjectController.checkRemovedRow(row)
+            self.__projectController.checkRemovedTableName(tableName)
+            self.__projectController.checkRemovedRow(row)
 
-            confirmRemoveRow = ConfirmRemoveRowWindow(self.__ProjectModel,self.__comboBox2,tableName)
+            confirmRemoveRow = ConfirmRemoveRowWindow(self.__projectModel,self.__comboBox2,tableName)
             confirmRemoveRow.setModal(True)
             confirmRemoveRow.exec()
         except Exception as e:
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow):
         Load structure method
         this method initializes new LoadFile object (window)
         """
-        self.loadFile=LoadFile(self.__ProjectModel, self.__comboBox1)
+        self.loadFile=LoadFile(self.__projectModel, self.__comboBox1)
         self.loadFile.setModal(True)
         self.loadFile.exec()
 
@@ -155,8 +155,8 @@ class MainWindow(QMainWindow):
         """
         try:
             currentTable = self.__comboBox1.currentText()
-            self.__ProjectController.checkRemovedTableName(currentTable)
-            editTable = editTableWindow(self.__ProjectModel,currentTable)
+            self.__projectController.checkRemovedTableName(currentTable)
+            editTable = editTableWindow(self.__projectModel,currentTable)
             editTable.setModal(True)
             editTable.exec()
             self.setComboBox2()
@@ -175,8 +175,8 @@ class MainWindow(QMainWindow):
             while(y>0):
                 self.__comboBox2.removeItem(y)
                 y=y-1
-            for x in range(self.__ProjectModel.getTableNumberOfRows(tableName)):
-                self.__comboBox2.addItem(str(self.__ProjectModel.getTableRow(tableName, x)))
+            for x in range(self.__projectModel.getTableNumberOfRows(tableName)):
+                self.__comboBox2.addItem(str(self.__projectModel.getTableRow(tableName, x)))
         except Exception as e:
             print(e)
 
@@ -186,10 +186,10 @@ class MainWindow(QMainWindow):
         this function initializes new AddTable object and adds table name to combobox
         """
         try:
-            self.__AddTable=AddTable(self.__ProjectModel)
+            self.__AddTable=AddTable(self.__projectModel)
             self.__AddTable.setModal(True)
             self.__AddTable.exec()
-            self.__ProjectController.checkTableName(self.__AddTable.getTableName())
+            self.__projectController.checkTableName(self.__AddTable.getTableName())
             self.__comboBox1.addItem(self.__AddTable.getTableName())
         except Exception as e:
             print(e)
@@ -201,8 +201,8 @@ class MainWindow(QMainWindow):
         """
         try:
             currentTable = self.__comboBox1.currentText()
-            self.__ProjectController.checkRemovedTableName(currentTable)
-            addRowWindow = AddRowWindow(self.__ProjectModel,currentTable)
+            self.__projectController.checkRemovedTableName(currentTable)
+            addRowWindow = AddRowWindow(self.__projectModel,currentTable)
             addRowWindow.setModal(True)
             addRowWindow.exec()
         except Exception as e:
@@ -217,8 +217,8 @@ class MainWindow(QMainWindow):
         """
         try:
             tableName = self.__comboBox1.currentText()
-            self.__ProjectController.checkRemovedTableName(tableName)
-            confirm = ConfirmWindow(self.__ProjectModel, self.__comboBox1, tableName)
+            self.__projectController.checkRemovedTableName(tableName)
+            confirm = ConfirmWindow(self.__projectModel, self.__comboBox1, tableName)
             confirm.setModal(True)
             confirm.exec()
 

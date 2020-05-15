@@ -14,7 +14,7 @@ class BrowseWindow(QDialog):
     """
     Load from file class
     """
-    def __init__(self, ProjectModel:ProjectModel, tableName):
+    def __init__(self, projectModel:ProjectModel, tableName):
         """
         Load from file class constructor
         :param ProjectModel: project model (ProjectModel)
@@ -29,7 +29,7 @@ class BrowseWindow(QDialog):
         self.__height=150
         self.__buttons=MyButton(self)
         self.__labels=MyLabel(self)
-        self.__ProjectModel=ProjectModel
+        self.__projectModel=projectModel
         self.__tableName=tableName
         self.InitWindow()
 
@@ -51,11 +51,11 @@ class BrowseWindow(QDialog):
 
     def browse(self):
         try:
-            x=self.__ProjectModel.lambdaBrowse(self.__tableName,self.__lineedit.text())
+            x=self.__projectModel.lambdaBrowse(self.__tableName,self.__lineedit.text())
             print('Czy to tutaj? ',len(x))
             self.close()
             try:
-                editTable=EditRowsWindow(self.__ProjectModel,Table(self.__tableName,self.__ProjectModel.getTable(self.__tableName).getNumberOfColumns(),len(x),self.__ProjectModel.getTable(self.__tableName).getColumnDict(),x))
+                editTable=EditRowsWindow(self.__projectModel,Table(self.__tableName,self.__projectModel.getTable(self.__tableName).getNumberOfColumns(),len(x),self.__projectModel.getTable(self.__tableName).getColumnDict(),x))
             except:
                 raise BadLambdaExpressionException(expression=x)
             else:
