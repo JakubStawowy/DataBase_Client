@@ -3,12 +3,22 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QComboBox, QDialog, QLineEdit, QApplication, QLabel, QVBoxLayout, QTableWidget, \
     QTableWidgetItem, QPushButton
 
+from GUIComponents.WarningWindow import WarningWindow
 from MyButton import MyButton
 from MyLabel import MyLabel
 
 class ConfirmRemoveRowWindow(QDialog):
-
+    """
+    Confirm Remove Row window class
+    """
     def __init__(self, projectModel,comboBox ,tableName):
+        """
+        Confirm Remove Row window class constructor
+
+        :param projectModel: ProjectModel
+        :param comboBox: QComboBox
+        :param tableName: str
+        """
         super().__init__()
         self.__windowTitle = 'Usunąć wiersz?'
         self.__top=300
@@ -32,6 +42,11 @@ class ConfirmRemoveRowWindow(QDialog):
         self.show()
 
     def remove(self):
+        """
+        Remove method
+        This method removes row from table. This method is called when user clicks the remove button
+        :return:
+        """
         try:
             x = self.__comboBox.currentText().strip('[]')
             y = x.split(', ')
@@ -39,5 +54,7 @@ class ConfirmRemoveRowWindow(QDialog):
             self.__comboBox.removeItem(self.__projectModel.getRowIndex(self.__tableName, str(l)) + 1)
             self.__projectModel.removeRow(self.__tableName, l)
             self.close()
-        except Exception as e:
-            print(e)
+        except:
+            w = WarningWindow('Wystąpiły problemy z usuwaniem wiersza')
+            w.setModal(True)
+            w.exec()

@@ -5,7 +5,7 @@ from GUIComponents.AddRowWindow import AddRowWindow
 from GUIComponents.AddTableWindow import AddTable
 from GUIComponents.BrowseWindow import BrowseWindow
 from GUIComponents.ConfirmRemoveRowWindow import ConfirmRemoveRowWindow
-from GUIComponents.ConfirmWindow import ConfirmWindow
+from GUIComponents.ConfirmRemoveTableWindow import ConfirmRemoveTableWindow
 from GUIComponents.EditRowWindow import EditRowsWindow
 from GUIComponents.EditTableWindow import editTableWindow
 from GUIComponents.LoadFileWindow import LoadFile
@@ -218,7 +218,7 @@ class MainWindow(QMainWindow):
         try:
             tableName = self.__comboBox1.currentText()
             self.__projectController.checkRemovedTableName(tableName)
-            confirm = ConfirmWindow(self.__projectModel, self.__comboBox1, tableName)
+            confirm = ConfirmRemoveTableWindow(self.__projectModel, self.__comboBox1, tableName)
             confirm.setModal(True)
             confirm.exec()
 

@@ -1,3 +1,5 @@
+import random
+
 from ModelBase import ModelBase
 from ProjectController import ProjectController
 from Table import Table
@@ -119,21 +121,21 @@ class ProjectModel(ModelBase):
             newTable=[]
 
             columnName = lambdaExpression.split(':')[0][7:] #Lambda expression argument should be the column name user want to search
+
             for x in self.__tableStructure: #Iterating by tables
 
                 if x.getTableName()==tableName:
 
                     columnNames = [colName for colName in x.getColumnDict().keys()] #List comprehession expression which fill new list with column names
-                    print('kolumny: ',columnNames)
+
                     for y in x.getContent(): #Iterating by rows
 
                         helpIndex = 0
                         for z in y: #Iterating by table components
-                            print('Checkpoint')
 
                             #print('tutej ',self.getTable(tableName).getColumnDict().keys()[0])
                             if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnTypesListP()[helpIndex]])(z)):
-                            #if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnDict().values()[helpIndex]])(z)):
+                                #if columnNames[helpIndex] == columnName and eval(lambdaExpression)(eval(self.__typeDict[self.getTable(tableName).getColumnDict().values()[helpIndex]])(z)):
                                 newTable.append(y)
                             helpIndex = helpIndex+1
 
@@ -141,6 +143,27 @@ class ProjectModel(ModelBase):
         except Exception as e:
             print(e)
 
+    def generateLambdaExpression(self, tableName:str):
+        """
+        generate lambda expression
+        this method generates random lambda-expression
+        :param tableName: str
+        :return: str
+        """
+        names = []
+        content = self.getTable(tableName).getContent()
+        columnTypes = self.getTable(tableName).getColumnTypesList()
+        operators = ['==','!=','>','<']
+        for x in self.getTable(tableName).getColumnDict():
+            names.append(x)
+
+        index = random.randint(0, len(names) - 1)
+        if columnTypes[index] == 'str':
+            lambdaExpression='lambda '+str(names[index])+':'+str(names[index])+operators[random.randint(0,1)]+'\''+str(content[random.randint(0,len(content)-1)][index]+'\'')
+        else:
+            lambdaExpression='lambda '+str(names[index])+':'+str(names[index])+operators[random.randint(0,len(operators)-1)]+str(content[random.randint(0,len(content)-1)][index])
+
+        return lambdaExpression
 
     def writeToFile(self,fileName:str):
         """
@@ -172,10 +195,14 @@ class ProjectModel(ModelBase):
                 if i%5 == 0:
                     l.append(lines.strip())
                     newTables.append(lines.strip())
+                    if lines.strip() in self.__tableNames:
+                        #self.__tableStructure.remove(self.getTable(lines.strip()))
+                        self.removeTable(lines.strip())
                 else:
                     l.append(eval(lines.strip()))
                 if i%5 == 4:
                     #self.createTable(*l)
+
                     self.addTable(Table(*l))
                     l=[]
                 i = i + 1

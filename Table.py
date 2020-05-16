@@ -18,7 +18,6 @@ class Table:
         self.__numberOfColumns = numberOfColumns
         self.__numberOfRows = numberOfRows
         self.__columnDict = columnDict.copy()
-        print(self.__columnDict)
         self.__content = content.copy()
 
         self.__columnTypesList = []
@@ -30,6 +29,7 @@ class Table:
         for x in self.__columnDict.values():
             self.__columnTypesList.append(self.__typeDict[x])
             self.__columnTypesListP.append(x)
+
 
 
         self.getTableName=lambda :self.__tableName
@@ -86,9 +86,9 @@ class Table:
         :param columnType: columnt data type (str)
         """
         self.__columnDict[columnName]=columnType
-
         self.__numberOfColumns=self.__numberOfColumns+1
         self.__columnTypesList.append(self.__typeDict[columnType])
+        self.__columnTypesListP.append(columnType)
 
     def setTableName(self,tableName:str):
         """
@@ -127,3 +127,8 @@ class Table:
     def __str__(self):
         return self.__tableName + "\n" + str(self.__numberOfColumns) + '\n' + str(self.__numberOfRows) + '\n' + str(
             self.__columnDict) + '\n' + str(self.__content)
+
+dict = {'a':1,'b':2}
+for x in dict.keys():
+    print(x)
+print(dict.keys())

@@ -1,7 +1,8 @@
+from ControllerBase import ControllerBase
 from Errors import *
 
 
-class ProjectController:
+class ProjectController(ControllerBase):
     """
     Project Controller class
     """
@@ -12,7 +13,7 @@ class ProjectController:
 
         :param tableName: table name (str)
         """
-        if tableName == '':
+        if tableName.isspace() or tableName == '':
             raise EmptyTableNameException()
         else:
             pass
@@ -38,7 +39,7 @@ class ProjectController:
         this method checks if column name is not empty
         :param columnName: column name (str)
         """
-        if columnName=='':
+        if columnName.isspace() or columnName=='':
             raise EmptyColumnNameException()
         else:
             pass
@@ -74,13 +75,20 @@ class ProjectController:
         :param value: value (str)
         :param columnType: column type (str)
         """
-        if columnType == 'str' or columnType == 'int_auto_increment':
+        if columnType == 'int_auto_increment':
             pass
         else:
-            try:
-                value = eval(columnType)(value)
-            except:
-                raise BadEnteredTypeException(expression=value)
+            if value.isspace() or value=="":
+                raise BadEnteredTypeException(expression=value,message="Kolumna nie może być pusta!")
+            if columnType=='str':
+                pass
+            else:
+                try:
+                    value = eval(columnType)(value)
+                except:
+                    raise BadEnteredTypeException(expression=value)
+
+
 
 
 

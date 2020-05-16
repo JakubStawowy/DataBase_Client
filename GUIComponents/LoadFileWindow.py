@@ -51,12 +51,19 @@ class LoadFile(QDialog):
         this method calls out readFromFile method (ProjectModel) and adds table names from file to comboBox
         """
         try:
+
             path=self.__lineedit.text()
             newTables=self.__projectModel.readFromFile(path)
-            for x in newTables:
-                self.__comboBox.addItem(x)
+            #for x in newTables:
+
+            self.__comboBox.clear()
+            self.__comboBox.addItem('Wybierz tabele')
+            for x in self.__projectModel.getStructure():
+                self.__comboBox.addItem(x.getTableName())
             self.close()
-        except:
-            warning=WarningWindow('Wprowadzono błędną ścieżkę!')
+
+        except Exception as e:
+            #warning=WarningWindow('Wprowadzono błędną ścieżkę!')
+            warning=WarningWindow(str(e))
             warning.setModal(True)
             warning.exec()

@@ -1,11 +1,21 @@
 
 from PyQt5.QtWidgets import QDialog
+
+from GUIComponents.WarningWindow import WarningWindow
 from MyButton import MyButton
 from MyLabel import MyLabel
 
-class ConfirmWindow(QDialog):
-
+class ConfirmRemoveTableWindow(QDialog):
+    """
+    Confirm remove table window class
+    """
     def __init__(self, projectModel,comboBox ,tableName):
+        """
+        Confirm remve table window class constructor
+        :param projectModel: ProjectModel
+        :param comboBox: QComboBox
+        :param tableName: str
+        """
         super().__init__()
         self.__windowTitle = 'Usunąć tabele?'
         self.__top=300
@@ -29,7 +39,17 @@ class ConfirmWindow(QDialog):
         self.show()
 
     def remove(self):
-        index = self.__projectModel.returnTableIndex(self.__projectModel.getStructure(), self.__tableName) + 1
-        self.__projectModel.removeTable(self.__tableName)
-        self.__comboBox.removeItem(index)
-        self.close()
+        """
+        Remove method
+        this method is called when user confirm to delete the table by clicking remove button
+        :return:
+        """
+        try:
+            index = self.__projectModel.returnTableIndex(self.__projectModel.getStructure(), self.__tableName) + 1
+            self.__projectModel.removeTable(self.__tableName)
+            self.__comboBox.removeItem(index)
+            self.close()
+        except:
+            w = WarningWindow('Wystąpiły problemy z usuwaniem wiersza')
+            w.setModal(True)
+            w.exec()

@@ -1,4 +1,3 @@
-
 from PyQt5.QtWidgets import QDialog, QLineEdit, QLabel
 
 from Errors import *

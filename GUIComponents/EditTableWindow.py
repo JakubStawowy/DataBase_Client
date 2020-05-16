@@ -130,6 +130,6 @@ class editTableWindow(QDialog):
             warning.exec()
 
         finally:
-            print('No to finalnie kontent = ',content)
+            
             self.__ProjectModel.getTable(self.__tableName).setNumberOfRows(len(content))
             self.__ProjectModel.getTable(self.__tableName).setContent(content)
