@@ -42,9 +42,9 @@ class LoadFile(QDialog):
         self.__lineedit.setGeometry(100, 50, 250, 20)
 
         self.__labels.createLabel('Ścieżka:', 40, 50)
-        self.__buttons.create_button('Wczytaj', 10, 110, 180, 30,
+        self.button_1 = self.__buttons.create_button('Wczytaj', 10, 110, 180, 30,
                                      'Kliknij aby dodać nową kolumne do tabeli', self.load)
-        self.__buttons.create_button('Anuluj', 210, 110, 180, 30, 'Kliknij aby dodać tabele', self.close)
+        self.button_2 = self.__buttons.create_button('Anuluj', 210, 110, 180, 30, 'Kliknij aby dodać tabele', self.close)
 
     def load(self):
         """

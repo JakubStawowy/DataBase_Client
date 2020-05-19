@@ -46,10 +46,11 @@ class BrowseWindow(QDialog):
         self.__lineedit.setGeometry(120, 50, 230, 20)
 
         self.__labels.createLabel('Lambda-wyrażenie:', 20, 50)
-        self.__buttons.create_button('Szukaj', 10, 110, 180, 30, 'Kliknij aby dodać nową kolumne do tabeli',
+        self.button_1 = self.__buttons.create_button('Szukaj', 10, 110, 180, 30, 'Kliknij aby dodać nową kolumne do tabeli',
                                      self.browse)
-        self.__buttons.create_button('Anuluj', 210, 110, 180, 30, 'Kliknij aby dodać tabele', self.close)
-        self.__buttons.create_button('?', 360, 50, 20, 20, 'Kliknij aby wyświetlić przykładowe wyrażenie-lambda',
+        self.button_2 = self.__buttons.create_button('Anuluj', 210, 110, 180, 30, 'Kliknij aby dodać tabele', self.close)
+
+        self.button_3 = self.__buttons.create_button('?', 360, 50, 20, 20, 'Kliknij aby wyświetlić przykładowe wyrażenie-lambda',
                                      self.help)
 
     def browse(self):

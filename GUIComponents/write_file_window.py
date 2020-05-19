@@ -41,9 +41,9 @@ class WriteFile(QDialog):
         self.__lineedit.setGeometry(100, 50, 250, 20)
 
         self.__labels.createLabel('Ścieżka:', 40, 50)
-        self.__buttons.create_button('Zapisz', 10, 110, 180, 30, 'Kliknij aby zapisać strukturę',
+        self.button_1 = self.__buttons.create_button('Zapisz', 10, 110, 180, 30, 'Kliknij aby zapisać strukturę',
                                      self.write)
-        self.__buttons.create_button('Nie zapisuj', 210, 110, 180, 30, 'Nie zapisuj struktury',
+        self.button_2 = self.__buttons.create_button('Nie zapisuj', 210, 110, 180, 30, 'Nie zapisuj struktury',
                                      self.close)
 
     def write(self):

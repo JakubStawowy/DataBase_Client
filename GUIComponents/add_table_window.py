@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QLineEdit, QLabel
 
-from errors import EmptyTableNameException
+from errors import EmptyTableNameException, ExistingTableException
 from errors import NoColumnTableException
 from GUIComponents.add_column_window import AddColumnWindow
 from GUIComponents.warning_window import WarningWindow
@@ -54,9 +54,9 @@ class AddTableWindow(QDialog):
         self.__labels.createLabel('Nazwa tabeli', 50, 50)
         self.__labels.createLabel('Liczba kolumn', 50, 100)
 
-        self.__buttons.create_button('Dodaj kolumne', 10, 160, 120.3, 30, 'Kliknij aby dodać nową kolumne do tabeli', self.add_column)
-        self.__buttons.create_button('Dodaj tabele', 143.3, 160, 120.3, 30, 'Kliknij aby dodać tabele', self.add_table)
-        self.__buttons.create_button('Anuluj', 276.6, 160, 120.3, 30, 'Kliknij aby dodać tabele', self.close)
+        self.button_1 = self.__buttons.create_button('Dodaj kolumne', 10, 160, 120.3, 30, 'Kliknij aby dodać nową kolumne do tabeli', self.add_column)
+        self.button_2 = self.__buttons.create_button('Dodaj tabele', 143.3, 160, 120.3, 30, 'Kliknij aby dodać tabele', self.add_table)
+        self.button_3 = self.__buttons.create_button('Anuluj', 276.6, 160, 120.3, 30, 'Kliknij aby dodać tabele', self.close)
 
         self.show()
 
@@ -96,7 +96,7 @@ class AddTableWindow(QDialog):
             self.__project_model.add_table(self.__new_table)
             self.close()
 
-        except (EmptyTableNameException, NoColumnTableException) as exception:
+        except (EmptyTableNameException, NoColumnTableException, ExistingTableException) as exception:
             warning = WarningWindow(str(exception))
             warning.setModal(True)
             warning.exec()

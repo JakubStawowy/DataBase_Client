@@ -37,8 +37,8 @@ class ConfirmRemoveRowWindow(QDialog):
         self.setFixedSize(250, 150)
         self.setWindowTitle(self.__window_title)
         self.__Labels.createLabel(self.__window_title, 90, 45)
-        self.__buttons.create_button('Usuń', 40, 90, 80, 30, 'miau', self.remove)
-        self.__buttons.create_button('Anuluj', 130, 90, 80, 30, 'miau', self.close)
+        self.button_1 = self.__buttons.create_button('Usuń', 40, 90, 80, 30, 'miau', self.remove)
+        self.button_2 = self.__buttons.create_button('Anuluj', 130, 90, 80, 30, 'miau', self.close)
         self.show()
 
     def remove(self):
@@ -54,7 +54,8 @@ class ConfirmRemoveRowWindow(QDialog):
             self.__combo_box.removeItem(self.__project_model.get_row_index(self.__table_name, str(chosen_row)) + 1)
             self.__project_model.remove_row(self.__table_name, chosen_row)
             self.close()
-        except:
+        except Exception as e:
+            print(e)
             w = WarningWindow('Wystąpiły problemy z usuwaniem wiersza')
             w.setModal(True)
             w.exec()

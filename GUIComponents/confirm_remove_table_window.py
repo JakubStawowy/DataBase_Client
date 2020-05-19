@@ -37,8 +37,8 @@ class ConfirmRemoveTableWindow(QDialog):
         self.setFixedSize(250, 150)
         self.setWindowTitle(self.__window_title)
         self.__Labels.createLabel(self.__window_title, 90, 45)
-        self.__buttons.create_button('Usuń', 40, 90, 80, 30, 'miau', self.remove)
-        self.__buttons.create_button('Anuluj', 130, 90, 80, 30, 'miau', self.close)
+        self.button_1 = self.__buttons.create_button('Usuń', 40, 90, 80, 30, 'miau', self.remove)
+        self.button_2 = self.__buttons.create_button('Anuluj', 130, 90, 80, 30, 'miau', self.close)
         self.show()
 
     def remove(self):

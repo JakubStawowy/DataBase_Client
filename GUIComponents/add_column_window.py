@@ -53,8 +53,8 @@ class AddColumnWindow(QDialog):
         self.combo_box.addItem('Liczba rzeczywista')
         self.combo_box.move(120, 60)
 
-        self.buttons.create_button('Dodaj kolumne', 10, 105, 120, 30, 'Kliknij aby dodać kolumne', self.add_column)
-        self.buttons.create_button('Anuluj', 160, 105, 120, 30, 'pics\Edit_Row.png', self.close)
+        self.button_1 = self.buttons.create_button('Dodaj kolumne', 10, 105, 120, 30, 'Kliknij aby dodać kolumne', self.add_column)
+        self.button_2 = self.buttons.create_button('Anuluj', 160, 105, 120, 30, 'pics\Edit_Row.png', self.close)
 
         self.show()
 

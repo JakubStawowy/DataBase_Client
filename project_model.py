@@ -1,4 +1,6 @@
 import random
+
+from errors import ExistingTableException
 from table import Table
 
 
@@ -29,7 +31,7 @@ class ProjectModel:
 
         """
         if table.get_table_name() in self.__table_names:
-            raise Exception('Tabela istnieje')
+            raise ExistingTableException(expression = table.get_table_name())
         else:
             self.__table_structure.append(table)
             self.__table_names.append(table.get_table_name())
@@ -87,8 +89,8 @@ class ProjectModel:
         for table in self.__table_structure:
 
             if table.get_table_name() == table_name:
-                table.removeRow(row_list)
-                table.numberOfRowsDeincrement()
+                table.remove_row(row_list)
+                table.number_of_rows_deincrement()
 
     def get_row_index(self, table_name: str, row: str):
         index = 0

@@ -27,7 +27,9 @@ class MyButton:
         :param tip: button tip (str)
         :param fun: button clicked function (function)
         """
-        self.__window.button = QPushButton(text, self.__window)
-        self.__window.button.setGeometry(QRect(x_coordinate, y_coordinate, width, height))
-        self.__window.button.setToolTip(tip)
-        self.__window.button.clicked.connect(fun)
+        button = QPushButton(text, self.__window)
+        button.setGeometry(QRect(x_coordinate, y_coordinate, width, height))
+        button.setToolTip(tip)
+        button.clicked.connect(fun)
+
+        return button

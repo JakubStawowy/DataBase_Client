@@ -76,3 +76,12 @@ class BadLambdaExpressionException(NewException):
     """
     def __init__(self, expression="", message="złe wyrażenie lambda!"):
         super().__init__(expression, message)
+
+class ExistingTableException(NewException):
+    """
+    ExistingTableException class
+    """
+    def __init__(self, expression="", message="tabela o tej nazwie istnieje!"):
+
+        super().__init__(expression, message)
+

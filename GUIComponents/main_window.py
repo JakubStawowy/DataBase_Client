@@ -51,24 +51,40 @@ class MainWindow(QMainWindow):
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(self.__width, self.__height)
 
-        self.__buttons.create_button('Wyszukaj', 550, 75, 200, 30, 'Kliknij aby przeszukać tabele',
-                                     self.browse)
-        self.__buttons.create_button('Edytuj wiersz', 550, 125, 200, 30, 'Kliknij aby edytować wiersz',
-                                     self.edit_row)
-        self.__buttons.create_button('Dodaj wiersz', 550, 175, 200, 30, 'Kliknij aby dodać wiersz',
-                                     self.add_row)
-        self.__buttons.create_button('Usuń wiersz', 550, 225, 200, 30, 'Kliknij aby usunąć wiersz',
-                                     self.remove_row)
-        self.__buttons.create_button('Edytuj tabelę', 550, 275, 200, 30, 'Kliknij aby edytować tabelę',
-                                     self.edit_table)
-        self.__buttons.create_button('Dodaj tabelę', 550, 325, 200, 30, 'Kliknij aby dodać nową tabelę',
-                                     self.create_table)
-        self.__buttons.create_button('Usuń tabelę', 550, 375, 200, 30, 'Kliknij aby usunąć tabelę',
-                                     self.remove_table)
-        self.__buttons.create_button('Otwórz plik', 300, 425, 200, 30, 'Kliknij aby otworzyć plik',
-                                     self.load_structure)
-        self.__buttons.create_button('Zakończ', 550, 425, 200, 30, 'Kliknij aby wyjść z programu',
-                                     self.end)
+        self.button_1 = self.__buttons.create_button('Wyszukaj', 550, 75, 200, 30, 'Kliknij aby przeszukać tabele',
+                                                     self.browse)
+        self.button_1.setEnabled(False)
+
+        self.button_2 = self.__buttons.create_button('Edytuj wiersz', 550, 125, 200, 30, 'Kliknij aby edytować wiersz',
+                                                     self.edit_row)
+        self.button_2.setEnabled(False)
+
+        self.button_3 = self.__buttons.create_button('Dodaj wiersz', 550, 175, 200, 30, 'Kliknij aby dodać wiersz',
+                                                     self.add_row)
+
+        self.button_3.setEnabled(False)
+
+        self.button_4 = self.__buttons.create_button('Usuń wiersz', 550, 225, 200, 30, 'Kliknij aby usunąć wiersz',
+                                                     self.remove_row)
+
+        self.button_4.setEnabled(False)
+
+        self.button_5 = self.__buttons.create_button('Edytuj tabelę', 550, 275, 200, 30, 'Kliknij aby edytować tabelę',
+                                                     self.edit_table)
+
+        self.button_5.setEnabled(False)
+
+        self.button_6 = self.__buttons.create_button('Dodaj tabelę', 550, 325, 200, 30, 'Kliknij aby dodać nową tabelę',
+                                                     self.create_table)
+        self.button_7 = self.__buttons.create_button('Usuń tabelę', 550, 375, 200, 30, 'Kliknij aby usunąć tabelę',
+                                                     self.remove_table)
+
+        self.button_7.setEnabled(False)
+
+        self.button_8 = self.__buttons.create_button('Otwórz plik', 300, 425, 200, 30, 'Kliknij aby otworzyć plik',
+                                                     self.load_structure)
+        self.button_9 = self.__buttons.create_button('Zakończ', 550, 425, 200, 30, 'Kliknij aby wyjść z programu',
+                                                     self.end)
 
         self.__combo_box_1 = QComboBox(self)
         self.__combo_box_1.move(400, 125)
@@ -118,8 +134,8 @@ class MainWindow(QMainWindow):
             new_table = Table(current_table, self.__project_model.get_table(current_table).get_number_of_columns(), 1,
                               self.__project_model.get_table(current_table).get_column_dict(), [
                                   self.__project_model.get_table_row(current_table,
-                                                                   self.__project_model.get_row_index(current_table,
-                                                                                                    current_row))])
+                                                                     self.__project_model.get_row_index(current_table,
+                                                                                                        current_row))])
 
             edit_row_window = EditRowsWindow(self.__project_model, new_table)
             edit_row_window.setModal(True)
@@ -160,6 +176,7 @@ class MainWindow(QMainWindow):
         load_file = LoadFile(self.__project_model, self.__combo_box_1)
         load_file.setModal(True)
         load_file.exec()
+        self.button_1.setEnabled(True)
 
     def edit_table(self):
         """
@@ -191,21 +208,32 @@ class MainWindow(QMainWindow):
                 index = index - 1
             for index in range(self.__project_model.get_table_number_of_rows(table_name)):
                 self.__combo_box_2.addItem(str(self.__project_model.get_table_row(table_name, index)))
-                print('Ustawiam comboboxaaaaaaaaa')
-        except Exception as exception:
-            print(exception)
+
+            self.button_3.setEnabled(True)
+            self.button_5.setEnabled(True)
+            self.button_7.setEnabled(True)
+
+        except Exception:
+
+            self.button_3.setEnabled(False)
+            self.button_5.setEnabled(False)
+            self.button_7.setEnabled(False)
 
     def combo_box_2_changed(self):
         if self.__combo_box_2.currentText() == 'Wybierz rekord':
             self.__combo_box_2.move(400, 175)
             self.__combo_box_2.setFixedSize(100, 20)
             self.__combo_box_2.adjustSize()
+            self.button_2.setEnabled(False)
+            self.button_4.setEnabled(False)
         else:
             self.__combo_box_2.move(500 - (len(self.__combo_box_2.currentText()) + 5) * 5, 175)
             self.__combo_box_2.setFixedSize((len(self.__combo_box_2.currentText()) + 5) * 5, 20)
             print(self.__combo_box_2.currentText())
             print(len(self.__combo_box_2.currentText()))
             self.__combo_box_2.adjustSize()
+            self.button_2.setEnabled(True)
+            self.button_4.setEnabled(True)
 
     def create_table(self):
         """
@@ -218,6 +246,7 @@ class MainWindow(QMainWindow):
             add_table.exec()
             self.__project_controller.check_table_name(add_table.get_table_name())
             self.__combo_box_1.addItem(add_table.get_table_name())
+            self.button_1.setEnabled(True)
         except Exception as exception:
             print(exception)
 

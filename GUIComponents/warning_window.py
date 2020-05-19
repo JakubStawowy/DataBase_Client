@@ -30,5 +30,5 @@ class WarningWindow(QDialog):
         self.setFixedSize(250, 150)
         self.setWindowTitle(self.__window_title)
         self.__labels.createLabel(self.__text, 50, 45)
-        self.__buttons.create_button('Rozumiem', 75, 90, 100, 30, 'miau', self.close)
+        self.button_1 = self.__buttons.create_button('Rozumiem', 75, 90, 100, 30, 'miau', self.close)
         self.show()
