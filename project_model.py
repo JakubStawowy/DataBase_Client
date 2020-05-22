@@ -107,7 +107,7 @@ class ProjectModel:
 
         :param table_name: table name (str)
 
-        :return: Boolean
+        :return: list
         """
         try:
             new_table = []
@@ -132,6 +132,7 @@ class ProjectModel:
                             help_index = help_index + 1
 
             return new_table
+
         except Exception as exception:
             print(exception)
 
