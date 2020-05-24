@@ -178,7 +178,7 @@ class ProjectModel:
         this method loads tables structure from file with extension ".txt"
 
         :param fileName: file name (str)
-        :return list
+        :return
         """
         l = []
         new_tables = []
@@ -196,7 +196,6 @@ class ProjectModel:
                     self.add_table(Table(*l))
                     l = []
                 i = i + 1
-        return new_tables
 
     def return_table_index(self, table_list, table_name: str):
         """
