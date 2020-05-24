@@ -49,7 +49,7 @@ class WriteFile(QDialog):
     def write(self):
         """
         write method
-        this method calls out writeToFile method (ProjectModel)
+        this method loads filename from lineedit and calls writeToFile method (ProjectModel)
         """
         try:
             path = self.__lineedit.text()

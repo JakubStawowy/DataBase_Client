@@ -11,15 +11,15 @@ from project_model import ProjectModel
 
 class AddRowWindow(QDialog):
     """
-    Edit table class
+    AddRowWindow class
     """
 
     def __init__(self, project_model: ProjectModel, table_name: str):
         """
         Edit table class constructor
 
-        :param ProjectModel: Project model (ProjectModel)
-        :param tableName: table name (str)
+        :param project_model: Project model (ProjectModel)
+        :param table_name: table name (str)
         """
         super().__init__()
 
@@ -50,8 +50,11 @@ class AddRowWindow(QDialog):
         self.v_box_layout = QVBoxLayout()
         self.v_box_layout.addWidget(self.table_widget)
 
-        self.create_button_1()
-        self.create_button_2()
+        self.button_1 = QPushButton('Dodaj wiersz', self)
+        self.button_1.clicked.connect(self.add_row)
+
+        self.button_2 = QPushButton('Anuluj', self)
+        self.button_2.clicked.connect(self.close)
 
         self.v_box_layout.addWidget(self.button_1)
         self.v_box_layout.addWidget(self.button_2)
@@ -75,29 +78,20 @@ class AddRowWindow(QDialog):
         for index in range(self.__number_of_columns):
             self.table_widget.setItem(0, index, QTableWidgetItem(''))
 
-    def create_button_1(self):
-
-        self.button_1 = QPushButton('Dodaj wiersz', self)
-        self.button_1.clicked.connect(self.add_row)
-
-    def create_button_2(self):
-
-        self.button_2 = QPushButton('Anuluj', self)
-        self.button_2.clicked.connect(self.close)
-
     def add_row(self):
         """
         Add row method
-        this methods increases table's number of rows and adds new empty row to displayed table
+        this methods checks if all column types are correct and no column is empty (except int - auto_increment type)
+        If there was no exception, add_row method from project_model is called
         """
         try:
             row = []
             help_index = 0
-            for x in range(self.__number_of_columns):
-                self.__project_controller.check_entered_type(self.table_widget.item(0, x).text(),
+            for index in range(self.__number_of_columns):
+                self.__project_controller.check_entered_type(self.table_widget.item(0, index).text(),
                                                           self.__project_model.get_table(
                                                               self.__table_name).get_column_types_list()[help_index])
-                row.append(self.table_widget.item(0, x).text())
+                row.append(self.table_widget.item(0, index).text())
                 help_index = help_index + 1
             self.__project_model.add_row(self.__table_name, row)
             self.close()

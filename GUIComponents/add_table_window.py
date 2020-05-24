@@ -65,9 +65,9 @@ class AddTableWindow(QDialog):
         Create counter label method
         this method creates new label which displays number of columns in created table
 
-        :param text: text (str)
-        :param x_coordinate: x axis coordinate
-        :param y_coordinate: y axis coordinate
+        :param text: str
+        :param x_coordinate: int
+        :param y_coordinate: int
         """
         self.counter_label = QLabel(self)
         self.counter_label.setText(text)
@@ -87,7 +87,8 @@ class AddTableWindow(QDialog):
     def add_table(self):
         """
         Add table method
-        this method calls out addTable method (ProjectModel)
+        this method loads table name and checks if created table number of columns is not equal 0.
+        If there was no exception, add_table method from ProjectModel is called
         """
         try:
             self.__project_controller.check_table_name(self.__lineedit.text())

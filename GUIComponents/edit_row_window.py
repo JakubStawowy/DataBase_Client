@@ -19,8 +19,8 @@ class EditRowsWindow(QDialog):
         """
         Edit table class constructor
 
-        :param ProjectModel: Project model (ProjectModel)
-        :param tableName: table name (str)
+        :param project_model: ProjectModel
+        :param table: Table
         """
         super().__init__()
 
@@ -38,9 +38,9 @@ class EditRowsWindow(QDialog):
         self.__column_dict = self.__table.get_column_dict()
         self.__content = self.__table.get_content()
 
-        self.InitWindow()
+        self.init_window()
 
-    def InitWindow(self):
+    def init_window(self):
         """
         Init Window method
         this method sets all window widgets
@@ -53,8 +53,11 @@ class EditRowsWindow(QDialog):
         self.v_box_layout = QVBoxLayout()
         self.v_box_layout.addWidget(self.table_widget)
 
-        self.create_button_1()
-        self.create_button_2()
+        self.button1 = QPushButton('Zapisz', self)
+        self.button1.clicked.connect(self.save_data)
+
+        self.button2 = QPushButton('Wyjdz', self)
+        self.button2.clicked.connect(self.close)
 
         self.v_box_layout.addWidget(self.button1)
         self.v_box_layout.addWidget(self.button2)
@@ -79,29 +82,12 @@ class EditRowsWindow(QDialog):
             for index_2 in range(self.__number_of_columns):
                 self.table_widget.setItem(index_1, index_2, QTableWidgetItem(self.__content[index_1][index_2]))
 
-    def create_button_1(self):
-        self.button1 = QPushButton('Zapisz', self)
-        self.button1.clicked.connect(self.save_data)
-
-    def create_button_2(self):
-        self.button2 = QPushButton('Wyjdz', self)
-        self.button2.clicked.connect(self.close)
-
-    def add_row(self):
-        """
-        Add row method
-        this methods increases table's number of rows and adds new empty row to displayed table
-        """
-        self.__number_of_rows = self.__number_of_rows + 1
-        self.table_widget.setRowCount(self.__number_of_rows)
-        for index in range(self.__number_of_columns):
-            self.table_widget.setItem(self.__number_of_rows - 1, index, QTableWidgetItem(''))
-
     def save_data(self):
         """
-                Add row method
-                this methods increases table's number of rows and adds new empty row to displayed table
-                """
+        save_data method
+        this method checks if all data typed by user have correct type and
+        sets table content in project_model::structure with content loaded from edit_row_window
+        """
         try:
             for index_1 in range(self.__number_of_rows):
                 row = []

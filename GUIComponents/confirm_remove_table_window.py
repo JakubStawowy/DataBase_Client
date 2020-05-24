@@ -32,7 +32,10 @@ class ConfirmRemoveTableWindow(QDialog):
         self.init_window()
 
     def init_window(self):
-
+        """
+        Init Window method
+        this method sets all window widgets
+        """
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(250, 150)
         self.setWindowTitle(self.__window_title)

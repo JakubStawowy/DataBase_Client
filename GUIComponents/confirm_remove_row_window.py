@@ -14,9 +14,9 @@ class ConfirmRemoveRowWindow(QDialog):
         """
         Confirm Remove Row window class constructor
 
-        :param projectModel: ProjectModel
-        :param comboBox: QComboBox
-        :param tableName: str
+        :param project_model: ProjectModel
+        :param combo_box: QComboBox
+        :param table_name: str
         """
         super().__init__()
         self.__window_title = 'Usunąć wiersz?'
@@ -32,13 +32,18 @@ class ConfirmRemoveRowWindow(QDialog):
         self.init_window()
 
     def init_window(self):
-
+        """
+        Init Window method
+        this method sets all window widgets
+        """
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(250, 150)
         self.setWindowTitle(self.__window_title)
         self.__Labels.createLabel(self.__window_title, 90, 45)
+
         self.button_1 = self.__buttons.create_button('Usuń', 40, 90, 80, 30, 'miau', self.remove)
         self.button_2 = self.__buttons.create_button('Anuluj', 130, 90, 80, 30, 'miau', self.close)
+
         self.show()
 
     def remove(self):

@@ -25,9 +25,8 @@ class MainWindow(QMainWindow):
     def __init__(self, project_model: ProjectModel):
         """
         Main window class constructor
-        Constructor sets basic parameters (title, position, MyButton class, MyLabel class)
 
-        Argument 1: ProjectModel class (Data storage class with logical methods)
+        :param project_model: ProjectModel
         """
         super().__init__()
 
@@ -104,6 +103,7 @@ class MainWindow(QMainWindow):
         """
         End method
         this method initializes new writeFile object (window)
+        after executing write to file procedure, window is closed
         :return:
         """
         self.writeFile = WriteFile(self.__project_model)
@@ -112,6 +112,11 @@ class MainWindow(QMainWindow):
         self.close()
 
     def browse(self):
+        """
+        browse method
+        this method checks if table was chosen from combo box 1 and initializes new BrowseWindow object
+        :return:
+        """
         try:
             current_table = self.__combo_box_1.currentText()
             self.__project_controller.check_removed_table_name(current_table)
@@ -125,6 +130,11 @@ class MainWindow(QMainWindow):
             warning.exec()
 
     def edit_row(self):
+        """
+        edit row method
+        this method checks if table and raw were chosen from combo boxes and initializes new EditRowsWindow object
+        :return:
+        """
         try:
             current_table = self.__combo_box_1.currentText()
             current_row = self.__combo_box_2.currentText()
@@ -151,7 +161,7 @@ class MainWindow(QMainWindow):
     def remove_row(self):
         """
         removeRow method
-        this method calls out removeRow method (ProjectModel)
+        this method checks if table and row were chosen from combo boxes and initializes new ConfirmRemoveWindow object
         """
         try:
             table_name = self.__combo_box_1.currentText()
@@ -176,12 +186,12 @@ class MainWindow(QMainWindow):
         load_file = LoadFile(self.__project_model, self.__combo_box_1)
         load_file.setModal(True)
         load_file.exec()
-        self.button_1.setEnabled(True)
+
 
     def edit_table(self):
         """
-        Edit table method
-        this method initializes new editTable object (editTable's constructor argument is chosen table in comboBox1)
+        edit table method
+        this method checks if table was chosen from combo box 1 and initializes new editTable object (editTable's constructor argument is chosen table in comboBox1)
         """
         try:
             current_table = self.__combo_box_1.currentText()
@@ -197,8 +207,8 @@ class MainWindow(QMainWindow):
 
     def set_combo_box_2(self):
         """
-        Set comboBox2 method
-        this method adds chosen table's (from comboBox1) rows to comboBox2
+        set comboBox 2 method
+        this method adds rows from chosen table to comboBox2
         """
         try:
             table_name = self.__combo_box_1.currentText()
@@ -209,17 +219,24 @@ class MainWindow(QMainWindow):
             for index in range(self.__project_model.get_table_number_of_rows(table_name)):
                 self.__combo_box_2.addItem(str(self.__project_model.get_table_row(table_name, index)))
 
+            self.button_1.setEnabled(True)
             self.button_3.setEnabled(True)
             self.button_5.setEnabled(True)
             self.button_7.setEnabled(True)
 
         except Exception:
 
+            self.button_1.setEnabled(False)
             self.button_3.setEnabled(False)
             self.button_5.setEnabled(False)
             self.button_7.setEnabled(False)
 
     def combo_box_2_changed(self):
+        """
+        combo box 2 changed method
+        this method adjusts combo box 2 size to current row size
+        :return:
+        """
         if self.__combo_box_2.currentText() == 'Wybierz rekord':
             self.__combo_box_2.move(400, 175)
             self.__combo_box_2.setFixedSize(100, 20)
@@ -237,8 +254,8 @@ class MainWindow(QMainWindow):
 
     def create_table(self):
         """
-        Create table function
-        this function initializes new AddTable object and adds table name to combobox
+        create table method
+        this method initializes new AddTable object and adds table name to combo box 1
         """
         try:
             add_table = AddTableWindow(self.__project_model)
@@ -246,14 +263,13 @@ class MainWindow(QMainWindow):
             add_table.exec()
             self.__project_controller.check_table_name(add_table.get_table_name())
             self.__combo_box_1.addItem(add_table.get_table_name())
-            self.button_1.setEnabled(True)
         except Exception as exception:
             print(exception)
 
     def add_row(self):
         """
         Add row method
-        this method initializes new Add row window object (if table is chosen)
+        this method checks if table was chosen from combo box 1 and initializes new Add row window object (if table is chosen)
         """
         try:
             current_table = self.__combo_box_1.currentText()
@@ -269,7 +285,7 @@ class MainWindow(QMainWindow):
     def remove_table(self):
         """
         Remove table method
-        this method calls out removeTAble method (ProjectModel)
+        this method checks if table was chosen from combo box 1 and initializes new ConfirmRemoveTableWindow object
         """
         try:
             table_name = self.__combo_box_1.currentText()

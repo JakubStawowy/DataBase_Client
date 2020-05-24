@@ -11,14 +11,13 @@ from table import Table
 
 class BrowseWindow(QDialog):
     """
-    Load from file class
+    BrowseWindowClass
     """
-
     def __init__(self, project_model: ProjectModel, table_name: str):
         """
         Load from file class constructor
-        :param ProjectModel: project model (ProjectModel)
-        :param comboBox: combo box (QComboBox)
+        :param project_model: ProjectModel
+        :param table_name: str
         """
         super().__init__()
         self.__title = 'Otwórz'
@@ -56,7 +55,7 @@ class BrowseWindow(QDialog):
     def browse(self):
         """
         Browse method
-        this method loads lambda-expression (typed by user) and displays table with rows (only those for which lambda-expression returns True value)
+        this method loads lambda-expression (typed by user) and displays table only with rows returned by lambda_browse method from ProjectModel
         :return:
         """
         try:
@@ -87,4 +86,15 @@ class BrowseWindow(QDialog):
             warning.exec()
 
     def help(self):
-        self.__lineedit.setText(self.__project_model.generate_lambda_expression(self.__table_name))
+        """
+        help method
+        this method fills lineedit with lambda-expression generated with generate_lambda_expression from ProjectModel
+        :return:
+        """
+        try:
+            self.__lineedit.setText(self.__project_model.generate_lambda_expression(self.__table_name))
+        except:
+            self.close()
+            warning = WarningWindow("Brak rekordów w tabeli!")
+            warning.setModal(True)
+            warning.exec()

@@ -13,8 +13,8 @@ class LoadFile(QDialog):
     def __init__(self, project_model: ProjectModel, combo_box: QComboBox):
         """
         Load from file class constructor
-        :param ProjectModel: project model (ProjectModel)
-        :param comboBox: combo box (QComboBox)
+        :param project_model: ProjectModel
+        :param combo_box: QComboBox
         """
         super().__init__()
 
@@ -54,7 +54,7 @@ class LoadFile(QDialog):
         try:
 
             path = self.__lineedit.text()
-            new_tables = self.__project_model.read_from_file(path)
+            self.__project_model.read_from_file(path)
 
             self.__combo_box.clear()
             self.__combo_box.addItem('Wybierz tabele')
@@ -63,6 +63,7 @@ class LoadFile(QDialog):
             self.close()
 
         except Exception as exception:
+            self.close()
             warning = WarningWindow(str(exception))
             warning.setModal(True)
             warning.exec()

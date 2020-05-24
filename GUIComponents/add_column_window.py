@@ -61,7 +61,7 @@ class AddColumnWindow(QDialog):
     def add_column(self):
         """
         Add Column method
-        this method calls out addColumn method (Table)
+        this method loads chosen column name, type and calls out addColumn method (Table)
         """
         try:
             column_type = self.combo_box.currentText()

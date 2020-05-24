@@ -19,8 +19,8 @@ class EditTableWindow(QDialog):
         """
         Edit table class constructor
 
-        :param ProjectModel: Project model (ProjectModel)
-        :param tableName: table name (str)
+        :param project_model: ProjectModel
+        :param table_name: str
         """
         super().__init__()
 
@@ -51,8 +51,11 @@ class EditTableWindow(QDialog):
         self.v_box_layout = QVBoxLayout()
         self.v_box_layout.addWidget(self.table_widget)
 
-        self.create_button_1()
-        self.create_button_2()
+        self.button1 = QPushButton('Dodaj wiersz', self)
+        self.button1.clicked.connect(self.add_row)
+
+        self.button2 = QPushButton('Zapisz tabele', self)
+        self.button2.clicked.connect(self.save_data)
 
         self.v_box_layout.addWidget(self.button1)
         self.v_box_layout.addWidget(self.button2)
@@ -77,14 +80,6 @@ class EditTableWindow(QDialog):
             for index_2 in range(self.__number_of_columns):
                 self.table_widget.setItem(index_1, index_2, QTableWidgetItem(self.__content[index_1][index_2]))
 
-    def create_button_1(self):
-        self.button1 = QPushButton('Dodaj wiersz', self)
-        self.button1.clicked.connect(self.add_row)
-
-    def create_button_2(self):
-        self.button2 = QPushButton('Zapisz tabele', self)
-        self.button2.clicked.connect(self.save_data)
-
     def add_row(self):
         """
         Add row method
@@ -97,8 +92,9 @@ class EditTableWindow(QDialog):
 
     def save_data(self):
         """
-        Save data method
-        this method swap's table old content with new content (loaded from editTable window)
+        save_data method
+        this method checks if all data typed by user have correct type and
+        sets table content in project_model::structure with content loaded from edit_row_window
         """
         global content
         try:
