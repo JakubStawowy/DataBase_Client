@@ -1,5 +1,5 @@
 import unittest
-from project_model import ProjectModel
+from model_controller import ProjectModel
 from table import Table
 
 

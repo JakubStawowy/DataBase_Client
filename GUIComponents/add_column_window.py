@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import QComboBox, QDialog, QLineEdit
 
 from errors import NoColumnTypeChosenException, EmptyColumnNameException
-from my_button import MyButton
-from my_label import MyLabel
-from project_controller import ProjectController
-from project_model import ProjectModel
+from my_widgets import MyButton
+from my_widgets import MyLabel
+from model_controller import ProjectController
+from model_controller import ProjectModel
 from table import Table
 from GUIComponents.warning_window import WarningWindow
 

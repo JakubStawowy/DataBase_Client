@@ -10,10 +10,10 @@ from GUIComponents.edit_table_window import EditTableWindow
 from GUIComponents.load_file_window import LoadFile
 from GUIComponents.warning_window import WarningWindow
 from GUIComponents.write_file_window import WriteFile
-from my_button import MyButton
-from my_label import MyLabel
-from project_controller import ProjectController
-from project_model import ProjectModel
+from my_widgets import MyButton
+from my_widgets import MyLabel
+from model_controller import ProjectController
+from model_controller import ProjectModel
 from table import Table
 
 
@@ -277,6 +277,7 @@ class MainWindow(QMainWindow):
             add_row_window = AddRowWindow(self.__project_model, current_table)
             add_row_window.setModal(True)
             add_row_window.exec()
+            self.set_combo_box_2()
         except Exception as exception:
             warning = WarningWindow(str(exception))
             warning.setModal(True)

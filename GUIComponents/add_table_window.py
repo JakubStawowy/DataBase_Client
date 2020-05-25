@@ -4,10 +4,10 @@ from errors import EmptyTableNameException, ExistingTableException
 from errors import NoColumnTableException
 from GUIComponents.add_column_window import AddColumnWindow
 from GUIComponents.warning_window import WarningWindow
-from my_button import MyButton
-from my_label import MyLabel
-from project_controller import ProjectController
-from project_model import ProjectModel
+from my_widgets import MyButton
+from my_widgets import MyLabel
+from model_controller import ProjectController
+from model_controller import ProjectModel
 from table import Table
 
 
@@ -45,7 +45,7 @@ class AddTableWindow(QDialog):
         """
         self.setWindowTitle('Dodaj tabele')
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
-        self.setFixedSize(405, 200)
+        self.setFixedSize(self.__width, self.__height)
 
         self.__lineedit = QLineEdit(self)
         self.__lineedit.move(130, 50)

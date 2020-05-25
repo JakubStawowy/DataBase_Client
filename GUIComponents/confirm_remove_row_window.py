@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QDialog
 from GUIComponents.warning_window import WarningWindow
-from my_button import MyButton
-from my_label import MyLabel
-from project_model import ProjectModel
+from my_widgets import MyButton
+from my_widgets import MyLabel
+from model_controller import ProjectModel
 
 
 class ConfirmRemoveRowWindow(QDialog):
@@ -37,7 +37,7 @@ class ConfirmRemoveRowWindow(QDialog):
         this method sets all window widgets
         """
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
-        self.setFixedSize(250, 150)
+        self.setFixedSize(self.__width, self.__height)
         self.setWindowTitle(self.__window_title)
         self.__Labels.createLabel(self.__window_title, 90, 45)
 

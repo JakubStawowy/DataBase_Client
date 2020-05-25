@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QDialog, QLineEdit
 
 from GUIComponents.warning_window import WarningWindow
-from my_button import MyButton
-from my_label import MyLabel
-from project_model import ProjectModel
+from my_widgets import MyButton
+from my_widgets import MyLabel
+from model_controller import ProjectModel
 
 
 class WriteFile(QDialog):
@@ -35,7 +35,7 @@ class WriteFile(QDialog):
         """
         self.setWindowTitle(self.__title)
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
-        self.setFixedSize(400, 150)
+        self.setFixedSize(self.__width, self.__height)
 
         self.__lineedit = QLineEdit(self)
         self.__lineedit.setGeometry(100, 50, 250, 20)

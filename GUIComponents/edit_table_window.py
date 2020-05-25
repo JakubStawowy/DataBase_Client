@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QPushButton
 
 from errors import BadEnteredTypeException
 from GUIComponents.warning_window import WarningWindow
-from project_controller import ProjectController
-from project_model import ProjectModel
+from model_controller import ProjectController
+from model_controller import ProjectModel
 
 
 class EditTableWindow(QDialog):

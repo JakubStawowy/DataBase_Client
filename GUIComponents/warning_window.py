@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog
 
-from my_button import MyButton
-from my_label import MyLabel
+from my_widgets import MyButton
+from my_widgets import MyLabel
 
 
 class WarningWindow(QDialog):
@@ -31,7 +31,7 @@ class WarningWindow(QDialog):
         this function sets all window widgets
         """
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
-        self.setFixedSize(250, 150)
+        self.setFixedSize(self.__width, self.__height)
         self.setWindowTitle(self.__window_title)
         self.__labels.createLabel(self.__text, 50, 45)
         self.button_1 = self.__buttons.create_button('Rozumiem', 75, 90, 100, 30, 'miau', self.close)
