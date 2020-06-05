@@ -8,6 +8,7 @@ from errors import EmptyColumnNameException
 from errors import NoColumnTypeChosenException
 from errors import NoColumnTableException
 from errors import BadEnteredTypeException
+
 class Table:
     """
     Table class

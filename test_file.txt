@@ -1,0 +1,5 @@
+test_table
+2
+3
+{'col_1': 'Liczba ca³kowita', 'col_2': 'Tekst'}
+[[1, 'row_1'], [2, 'row_2'], [3, 'row_3']]

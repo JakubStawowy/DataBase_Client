@@ -1,9 +1,22 @@
 from PyQt5.QtCore import QRect
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QDialog, QLineEdit, QLabel, QVBoxLayout, QPushButton, QTableWidget, \
-    QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTableWidget
+from PyQt5.QtWidgets import QTableWidgetItem
 
-from errors import NoColumnTypeChosenException, EmptyColumnNameException, EmptyTableNameException, \
-    NoColumnTableException, ExistingTableException, BadEnteredTypeException, BadLambdaExpressionException
+from errors import NoColumnTypeChosenException
+from errors import EmptyColumnNameException
+from errors import EmptyTableNameException
+from errors import NoColumnTableException
+from errors import ExistingTableException
+from errors import BadEnteredTypeException
+from errors import BadLambdaExpressionException
+
 from database_logic import ProjectController
 from database_logic import ProjectModel
 from database_logic import Table
