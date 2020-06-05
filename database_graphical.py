@@ -6,7 +6,7 @@ from errors import NoColumnTypeChosenException, EmptyColumnNameException, EmptyT
     NoColumnTableException, ExistingTableException, BadEnteredTypeException, BadLambdaExpressionException
 from database_logic import ProjectController
 from database_logic import ProjectModel
-from table import Table
+from database_logic import Table
 
 
 class MainWindow(QMainWindow):

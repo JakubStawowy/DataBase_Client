@@ -1,6 +1,6 @@
 import unittest
-from model_controller import ProjectModel
-from table import Table
+from database_logic import ProjectModel
+from database_logic import Table
 
 
 class TestProjectModel(unittest.TestCase):
