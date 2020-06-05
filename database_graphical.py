@@ -483,7 +483,7 @@ class AddRowWindow(QDialog):
 
     def __init__(self, project_model: ProjectModel, table_name: str):
         """
-        Edit table class constructor
+        Add Row class constructor
 
         :param project_model: Project model (ProjectModel)
         :param table_name: table name (str)
@@ -497,7 +497,7 @@ class AddRowWindow(QDialog):
         self.__table_name = table_name
         self.__project_model = project_model
         self.__project_controller = ProjectController()
-        self.__title = self.__project_model.get_table(table_name).get_table_name()
+        self.__title = "Dodaj wiersz"
         self.__number_of_rows = self.__project_model.get_table(table_name).get_number_of_rows()
         self.__number_of_columns = self.__project_model.get_table(table_name).get_number_of_columns()
         self.__column_dict = self.__project_model.get_table(table_name).get_column_dict()
@@ -586,7 +586,7 @@ class BrowseWindow(QDialog):
         :param table_name: str
         """
         super().__init__()
-        self.__title = 'Otwórz'
+        self.__title = 'Przeszukaj tabele'
         self.__top = 400
         self.__left = 400
         self.__width = 400
@@ -603,7 +603,7 @@ class BrowseWindow(QDialog):
         Init Window method
         this method sets all window widgets
         """
-        self.setWindowTitle('Dodaj tabele')
+        self.setWindowTitle(self.__title)
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(self.__width, self.__height)
 
@@ -687,7 +687,7 @@ class EditRowsWindow(QDialog):
         self.__table = table
         self.__table_name = self.__table.get_table_name()
         self.__project_controller = ProjectController()
-        self.__title = self.__table_name
+        self.__title = "Edytuj wiersz"
         self.__number_of_rows = self.__table.get_number_of_rows()
         self.__number_of_columns = self.__table.get_number_of_columns()
         self.__column_dict = self.__table.get_column_dict()
@@ -791,7 +791,7 @@ class EditTableWindow(QDialog):
         self.__table_name = table_name
         self.__project_model = project_model
         self.__project_controller = ProjectController()
-        self.__title = self.__project_model.get_table(table_name).get_table_name()
+        self.__title = "Edytuj tabelę"
         self.__number_of_rows = self.__project_model.get_table(table_name).get_number_of_rows()
         self.__number_of_columns = self.__project_model.get_table(table_name).get_number_of_columns()
         self.__column_dict = self.__project_model.get_table(table_name).get_column_dict()
@@ -1078,7 +1078,7 @@ class LoadFile(QDialog):
         """
         super().__init__()
 
-        self.__title = 'Otwórz'
+        self.__title = 'Otwórz plik'
         self.__top = 400
         self.__left = 400
         self.__width = 400
@@ -1094,7 +1094,7 @@ class LoadFile(QDialog):
         Init Window method
         this method sets all window widgets
         """
-        self.setWindowTitle('Dodaj tabele')
+        self.setWindowTitle(self.__title)
         self.setGeometry(self.__left, self.__top, self.__width, self.__height)
         self.setFixedSize(self.__width, self.__height)
 
